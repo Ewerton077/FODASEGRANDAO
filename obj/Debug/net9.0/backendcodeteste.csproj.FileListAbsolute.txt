@@ -1746,7 +1746,6 @@ C:\Users\alunobcc11\Desktop\Design-Conecta\MFVCT-first\obj\Debug\net9.0\backendc
 C:\Users\alunobcc11\Desktop\Design-Conecta\MFVCT-first\obj\Debug\net9.0\backendconfigconecta.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\alunobcc11\Desktop\Design-Conecta\MFVCT-first\obj\Debug\net9.0\backendcodeteste.RazorAssemblyInfo.cache
 C:\Users\alunobcc11\Desktop\Design-Conecta\MFVCT-first\obj\Debug\net9.0\backendcodeteste.RazorAssemblyInfo.cs
-C:\Users\alunobcc11\Desktop\Design-Conecta\MFVCT-first\obj\Debug\net9.0\backendcodeteste.sourcelink.json
 C:\Users\alunobcc11\Desktop\Design-Conecta\MFVCT-first\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\alunobcc11\Desktop\Design-Conecta\MFVCT-first\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\alunobcc11\Desktop\Design-Conecta\MFVCT-first\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
