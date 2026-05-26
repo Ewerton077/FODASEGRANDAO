@@ -1,0 +1,379 @@
+@{
+    ViewData["Title"] = "Painel do Professor";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduSys — Professor</title>
+    <link rel="stylesheet" href="~/css/geral.css" />
+    <style>
+        :root {
+            --brand-lime: #1EB53A;
+            --brand-lime-dark: #008744;
+            --brand-lime-light: #31f301;
+            --brand-green: #1EB53A;
+            --brand-green-mid: #008744;
+            --brand-green-dark: #004438;
+            --brand-teal: #08785B;
+
+            --font-sans: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', monospace;
+
+            --bg-deep: #f4faf4;
+            --bg-mid: #eaf5ea;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-card-alt: rgba(244, 250, 244, 0.85);
+            --bg-row: rgba(30, 181, 58, 0.05);
+            --bg-input: rgba(30, 181, 58, 0.04);
+
+            --teal-400: #08785B;
+            --teal-600: #065a45;
+            --teal-800: #043d2e;
+
+            --lime-300: #1EB53A;
+            --lime-400: #1EB53A;
+            --lime-600: #008744;
+            --lime-700: #006633;
+            --lime-900: #004438;
+
+            --border:       rgba(30, 181, 58, 0.15);
+            --border-strong:rgba(30, 181, 58, 0.30);
+            --border-hover: rgba(30, 181, 58, 0.40);
+            --border-lime:  rgba(30, 181, 58, 0.25);
+
+            --text-100: #1a2e1a;
+            --text-200: #1a3d1a;
+            --text-400: #4a7a4a;
+            --text-600: #6a9a6a;
+            --text-800: #9aba9a;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --glow-teal: 0 0 16px rgba(8, 120, 91, 0.15);
+            --glow-lime: 0 0 16px rgba(30, 181, 58, 0.20);
+        }
+
+        body { background: #FFFFFF; font-family: var(--font-sans); }
+        body::before { display: none; }
+
+        .sidebar {
+            background: linear-gradient(180deg, #004438 0%, #002e25 100%);
+        }
+        .sidebar-logo {
+            height: 32px;
+            width: auto;
+            display: block;
+        }
+        .footer-logo {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+
+        .dash-page { min-height: 100vh; display: flex; }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .page-title    { font-size: 24px; font-weight: 700; color: var(--text-100); line-height: 1.2; }
+        .page-title span { color: var(--lime-300); }
+        .page-subtitle { font-size: 13px; color: var(--text-400); margin-top: 4px; }
+
+        .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .content-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .turma-count {
+            font-family: var(--font-mono);
+            font-size: 15px;
+            color: var(--text-400);
+            flex-shrink: 0;
+        }
+
+        .agenda-time {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--teal-400);
+            min-width: 40px;
+            flex-shrink: 0;
+        }
+
+        .comunicado-item {
+            padding: 13px;
+            border-radius: var(--radius-md);
+            background: var(--bg-row);
+            border: 1px solid var(--border);
+            transition: border-color 0.2s;
+        }
+        .comunicado-item:hover { border-color: var(--border-strong); }
+
+        .media-green  { font-family: var(--font-mono); font-weight: 700; color: var(--lime-400); }
+        .media-yellow { font-family: var(--font-mono); font-weight: 700; color: #ffd93d; }
+        .media-red    { font-family: var(--font-mono); font-weight: 700; color: #ff6060; }
+
+        .freq-row      { display: flex; align-items: center; gap: 10px; }
+        .freq-bar-wrap { width: 72px; }
+
+        .glow-prof {
+            width: 600px; height: 500px;
+            bottom: -150px; left: 10%;
+            background: radial-gradient(ellipse, rgba(30,181,58,0.06) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body>
+<div class="dash-page">
+
+    <div class="glow-blob glow-prof"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="~/css/imagens/logo_conecta 2.png" alt="Logo Conecta" class="sidebar-logo" />
+        </div>
+
+        <p class="sidebar-section">Menu</p>
+
+        <a class="nav-link active" asp-controller="Professor" asp-action="Index">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            Dashboard
+        </a>
+        <a class="nav-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+            Turmas
+        </a>
+        <a class="nav-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+            
+            Agenda
+        </a>
+        <a class="nav-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+            Comunicados
+        </a>
+
+        <div class="sidebar-spacer"></div>
+        <p class="sidebar-section">Conta</p>
+
+        <a class="nav-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+            Perfil
+        </a>
+        <a class="nav-link" asp-controller="Home" asp-action="Index">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+            </svg>
+            Sair
+        </a>
+
+        <div class="sidebar-footer">
+            <div class="user-chip">
+                <div class="avatar" style="width:32px;height:32px;font-size:11px;background:linear-gradient(135deg,#1EB53A 0%,#004438 100%)">CM</div>
+                <div>
+                    <p class="user-chip-name">Carlos Mendes</p>
+                    <p class="user-chip-role">PROFESSOR</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content anim-1">
+
+        <div class="topbar">
+            <div>
+                <h1 class="page-title">Painel <span>Professor</span></h1>
+                <p class="page-subtitle">Gerencie turmas, notas e frequência</p>
+            </div>
+            <div class="topbar-actions">
+                <button class="btn btn-outline">EXPORTAR_</button>
+                <button class="btn btn-primary">+ NOVA TAREFA</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row anim-2">
+            <div class="stat-card">
+                <span class="label">Alunos Ativos</span>
+                <p class="stat-value">20</p>
+                <p class="stat-sub">semestre 2025.1</p>
+            </div>
+            <div class="stat-card">
+                <span class="label">Total Alunos</span>
+                <p class="stat-value">80</p>
+                <p class="stat-sub">em todas as turmas</p>
+            </div>
+            <div class="stat-card">
+                <span class="label">Média Geral</span>
+                <p class="stat-value">7.8</p>
+                <p class="stat-sub">das turmas</p>
+            </div>
+            <div class="stat-card">
+                <span class="label">Pendências</span>
+                <p class="stat-value" style="color:#ff6060;">5</p>
+                <p class="stat-sub">apresentações</p>
+            </div>
+        </div>
+
+        <!-- Turmas + Agenda + Comunicados -->
+        <div class="content-row anim-3">
+
+            <!-- Turmas -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="label-green">Minhas Turmas</span>
+                    <span class="badge badge-teal">4 ATIVAS</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div class="list-item">
+                        
+                        <div style="flex:1;min-width:0">
+                            <p class="text-sm text-medium truncate">Turma 1</p>
+                            <p class="text-xs text-muted mt-1">Dados: 17 | Empregados: 12</p>
+                        </div>
+                        <span class="turma-count">20</span>
+                    </div>
+                    <div class="list-item">
+                        <!--TAG SPAN ATRAS PARA ALGUM DETALHAMENTO DE INFORMAÇÕES-->
+                        <div style="flex:1;min-width:0">
+                            <p class="text-sm text-medium truncate">Turma 2</p>
+                            <p class="text-xs text-muted mt-1">Dados: 17 | Empregados: 12</p>
+                        </div>
+                        <span class="turma-count">20</span>
+                    </div>
+                    <div class="list-item">
+                        
+                        <div style="flex:1;min-width:0">
+                            <p class="text-sm text-medium truncate">Turma 3</p>
+                            <p class="text-xs text-muted mt-1">Dados: 17 | Empregados: 12</p>
+                        </div>
+                        <span class="turma-count">18</span>
+                    </div>
+                    <div class="list-item">
+                       
+                        <div style="flex:1;min-width:0">
+                            <p class="text-sm text-medium truncate">Turma 4</p>
+                            <p class="text-xs text-muted mt-1">Dados: 17 | Empregados: 12</p>
+                        </div>
+                        <span class="turma-count">20</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agenda -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="label-green">Agenda de Hoje</span>
+                    <span class="badge badge-neutral">MÊS · DIA</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div class="list-item">
+                        <span class="agenda-time">08h00</span>
+                        <div style="flex:1;min-width:0">
+                            <p class="text-sm text-medium truncate">Reunião de Negócios</p>
+                            <p class="text-xs text-muted mt-1">Clean Architecture</p>
+                        </div>
+                        <span class="agenda-tag agenda-tag-green">AULA</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="agenda-time">10h00</span>
+                        <div style="flex:1;min-width:0">
+                            <p class="text-sm text-medium truncate">Material Aula Tech</p>
+                            <p class="text-xs text-muted mt-1">Aula Prática</p>
+                        </div>
+                        <span class="agenda-tag agenda-tag-green">AULA</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="agenda-time">13h30</span>
+                        <div style="flex:1;min-width:0">
+                            <p class="text-sm text-medium truncate">Apresentação de Projeto</p>
+                            <p class="text-xs text-muted mt-1">Ideia de projeto para alunos</p>
+                        </div>
+                        <span class="agenda-tag agenda-tag-neutral">RNO</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="agenda-time">16h00</span>
+                        <div style="flex:1;min-width:0">
+                            <p class="text-sm text-medium truncate">Relatório de Projeto</p>
+                            <p class="text-xs text-muted mt-1">Descrição inicial</p>
+                        </div>
+                        <span class="agenda-tag agenda-tag-red">REQUIRED</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comunicados -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="label-green">Comunicados</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div class="comunicado-item">
+                        <p class="label mb-1">MATHEUS · MPK</p>
+                        <p class="text-sm text-medium">Atualização de currículo</p>
+                        <p class="text-xs text-muted mt-1">Sexta-feira · 10h00</p>
+                    </div>
+                    <div class="comunicado-item">
+                        <p class="label mb-1">JOÃO FANTIN</p>
+                        <p class="text-sm text-medium">Atualização de criptografia</p>
+                        <p class="text-xs text-muted mt-1">15/12 · Via sistema</p>
+                    </div>
+                    <div class="comunicado-item">
+                        <p class="label mb-1">GALLO</p>
+                        <p class="text-sm text-medium">Material enviado 12h00</p>
+                        <p class="text-xs text-muted mt-1">07 a 11/04 · Conecta</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-bar">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span class="status-dot"></span>
+                <img src="~/css/imagens/logo_conecta 2.png" alt="Logo Conecta" class="footer-logo" />
+            </div>
+
+        </div>
+
+    </main>
+</div>
+</body>
+</html>

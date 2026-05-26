@@ -1,0 +1,626 @@
+@{
+    ViewData["Title"] = "Painel do Aluno";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduSys — Aluno</title>
+    <link rel="stylesheet" href="~/css/geral.css" />
+    <style>
+        :root {
+            --brand-lime: #1EB53A;
+            --brand-lime-dark: #008744;
+            --brand-lime-light: #31f301;
+            --brand-green: #1EB53A;
+            --brand-green-mid: #008744;
+            --brand-green-dark: #004438;
+            --brand-teal: #08785B;
+
+            --font-sans: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', monospace;
+
+            --bg-deep: #f4faf4;
+            --bg-mid: #eaf5ea;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-card-alt: rgba(244, 250, 244, 0.85);
+            --bg-row: rgba(30, 181, 58, 0.05);
+            --bg-input: rgba(30, 181, 58, 0.04);
+
+            --teal-400: #08785B;
+            --teal-600: #065a45;
+            --teal-800: #043d2e;
+
+            --lime-300: #1EB53A;
+            --lime-400: #1EB53A;
+            --lime-600: #008744;
+            --lime-700: #006633;
+            --lime-900: #004438;
+
+            --border:       rgba(30, 181, 58, 0.15);
+            --border-strong:rgba(30, 181, 58, 0.30);
+            --border-hover: rgba(30, 181, 58, 0.40);
+            --border-lime:  rgba(30, 181, 58, 0.25);
+
+            --text-100: #1a2e1a;
+            --text-200: #1a3d1a;
+            --text-400: #4a7a4a;
+            --text-600: #6a9a6a;
+            --text-800: #9aba9a;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --glow-teal: 0 0 16px rgba(8, 120, 91, 0.15);
+            --glow-lime: 0 0 16px rgba(30, 181, 58, 0.20);
+        }
+
+        body { background: #FFFFFF; font-family: var(--font-sans); }
+        body::before { display: none; }
+
+        .dash-page { min-height: 100vh; display: flex; }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            background: #FFFFFF;
+            padding: 16px 20px;
+            border-radius: var(--radius-lg);
+        }
+        .page-title    { font-size: 24px; font-weight: 700; color: var(--text-100); line-height: 1.2; }
+        .page-subtitle { font-size: 13px; color: var(--text-600); margin-top: 4px; }
+
+        .session-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ── TASK ROW ── */
+        .task-row {
+            display: flex;
+            gap: 0;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .task-col {
+            flex: 1;
+            padding: 18px 22px;
+            border-right: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        .task-col:last-child { border-right: none; }
+        .task-col:hover { background: rgba(118,192,87,0.05); }
+
+        .task-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--teal-400);
+            margin-bottom: 10px;
+        }
+        .task-title { font-size: 13px; font-weight: 500; color: var(--text-200); }
+        .task-meta  { font-size: 11px; color: var(--text-600); margin-top: 4px; }
+
+        /* ── CONTENT GRID ── */
+        .content-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 280px;
+            gap: 16px;
+        }
+
+        .side-col { display: flex; flex-direction: column; gap: 14px; }
+
+        /* ── ÁREA FUNCIONAL ── */
+        .af-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .af-section-title {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-600);
+            margin-bottom: 12px;
+        }
+
+        /* Especialidades */
+        .esp-list { display: flex; flex-wrap: wrap; gap: 7px; }
+
+        .esp-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            padding: 5px 12px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--teal-400);
+            transition: all 0.2s;
+            cursor: default;
+        }
+        .esp-tag:hover {
+            border-color: var(--border-strong);
+            color: var(--text-200);
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        /* Tech bars */
+        .tech-list   { display: flex; flex-direction: column; gap: 12px; }
+        .tech-row    { display: flex; flex-direction: column; gap: 5px; }
+        .tech-header { display: flex; justify-content: space-between; align-items: center; }
+        .tech-name   { font-size: 12px; font-weight: 500; color: var(--text-200); }
+        .tech-pct    { font-family: var(--font-mono); font-size: 11px; color: var(--teal-400); }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(5,18,17,0.82);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+
+        .modal {
+            background: linear-gradient(145deg, rgba(27,77,70,0.98) 0%, rgba(11,43,40,0.96) 100%);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+            animation: fadeUp 0.3s cubic-bezier(.22,1,.36,1) both;
+        }
+
+        .modal-title { font-size: 17px; font-weight: 600; color: var(--text-100); margin-bottom: 4px; }
+        .modal-sub   { font-size: 12px; color: var(--text-600); margin-bottom: 24px; }
+
+        .modal-field          { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+        .modal-field label    {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-600);
+        }
+
+        .modal-range {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; height: 4px;
+            background: rgb(255, 255, 255);
+            border-radius: var(--radius-full);
+            outline: none; cursor: pointer;
+        }
+        .modal-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: var(--lime-400);
+            box-shadow: 0 0 6px rgba(118,192,87,0.5);
+            cursor: pointer;
+        }
+
+        .modal-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+
+        .modal-tab {
+            flex: 1; padding: 9px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--text-600); background: transparent; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-tab.active {
+            background: rgba(74,139,130,0.15);
+            border-color: var(--border-strong);
+            color: var(--text-100);
+        }
+
+        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+        .range-val {
+            font-family: var(--font-mono); font-size: 11px;
+            color: var(--teal-400); text-align: right; margin-top: 3px;
+        }
+
+        .sidebar-logo {
+            height: 32px;
+            width: auto;
+            display: block;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #004438 0%, #002e25 100%);
+        }
+
+        /* glow */
+        .glow-aluno {
+            width: 600px; height: 500px;
+            bottom: -150px; left: 10%;
+            background: radial-gradient(ellipse, rgba(30,181,58,0.06) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body>
+<div class="dash-page">
+
+    <div class="glow-blob glow-aluno"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="~/css/imagens/logo_conecta 2.png" alt="Logo Conecta" class="sidebar-logo" />
+        </div>
+
+        <p class="sidebar-section">Menu</p>
+
+        <a class="nav-link active" asp-controller="Aluno" asp-action="Index">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            Dashboard
+        </a>
+        <a class="nav-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 19V6a2 2 0 012-2h12a2 2 0 012 2v13"/>
+                <path d="M4 19h16M8 11h8M8 15h5"/>
+            </svg>
+            Matérias
+        </a>
+        <a class="nav-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M9 11l3 3L22 4"/>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+            Tarefas
+        </a>
+        <a class="nav-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <path d="M16 2v4M8 2v4M3 10h18"/>
+            </svg>
+            Calendário
+        </a>
+        <a class="nav-link" asp-controller="Aluno" asp-action="Posts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+            Posts
+        </a>
+
+        <div class="sidebar-spacer"></div>
+        <p class="sidebar-section">Conta</p>
+
+        <a class="nav-link" href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+            Perfil
+        </a>
+        <a class="nav-link" asp-controller="Home" asp-action="Index">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+            </svg>
+            Sair
+        </a>
+
+        <div class="sidebar-footer">
+            <div class="user-chip">
+                <div class="avatar" style="width:32px;height:32px;font-size:11px;">JS</div>
+                <div>
+                    <p class="user-chip-name">João Silva</p>
+                    <p class="user-chip-role">ALUNO · 2025</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content anim-1">
+
+        <!-- Topbar -->
+        <div class="topbar">
+            <div>
+                <h1 class="page-title">Olá, João 👋</h1>
+                <p class="page-subtitle">Aqui está o seu resumo de hoje</p>
+            </div>
+            <div class="session-pill">
+                <span class="status-dot"></span>
+                <span class="label">SESSÃO ATIVA</span>
+            </div>
+        </div>
+
+        <!-- Tarefas / temas -->
+        <div class="task-row anim-2">
+            <div class="task-col">
+                <p class="task-label">Tema 1</p>
+                <p class="task-title">Revisar conteúdo de P2</p>
+                <p class="task-meta">Compiladores · até 24/03</p>
+            </div>
+            <div class="task-col">
+                <p class="task-label">Tema 2</p>
+                <p class="task-title">Entregar projeto final</p>
+                <p class="task-meta">Banco de Dados II · até 28/03</p>
+            </div>
+            <div class="task-col">
+                <p class="task-label">Tema 3</p>
+                <p class="task-title">Preparar apresentação</p>
+                <p class="task-meta">Seminário Redes · até 02/04</p>
+            </div>
+            <div class="task-col">
+                <p class="task-label">Tema 4</p>
+                <p class="task-title">Lista de exercícios</p>
+                <p class="task-meta">Cálculo Numérico · até 05/04</p>
+            </div>
+        </div>
+
+        <!-- Content row -->
+        <div class="content-row anim-3">
+
+            <!-- Área Funcional -->
+            <div class="card" style="grid-column:span 2;">
+                <div class="card-header">
+                    <span class="label-green">Área Funcional</span>
+                </div>
+
+                <!-- Biografia -->
+                <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);">
+                    <p class="af-section-title">Biografia</p>
+                    <textarea id="bio-field"
+                        placeholder="Escreva um pouco sobre você, seus interesses e objetivos..."
+                        oninput="saveBio(this)"
+                        style="width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-md);padding:11px 14px;color:var(--text-200);font-family:var(--font-sans);font-size:13px;line-height:1.65;outline:none;resize:vertical;min-height:72px;max-height:180px;transition:border-color 0.2s,background 0.2s;"
+                        onfocus="this.style.borderColor='rgba(118,192,87,0.35)';this.style.background='rgba(118,192,87,0.05)'"
+                        onblur="this.style.borderColor='var(--border)';this.style.background='var(--bg-input)'"
+                    ></textarea>
+                    <p id="bio-counter" style="font-family:var(--font-mono);font-size:9px;color:var(--text-800);text-align:right;margin-top:4px;">0 / 300</p>
+                </div>
+
+                <!-- Especialidades + Tecnologias -->
+                <div class="af-grid">
+                    <div>
+                        <p class="af-section-title">Especialidades</p>
+                        <div class="esp-list" id="esp-list">
+                            <span class="esp-tag">Back-end</span>
+                            <span class="esp-tag">Sistemas Embarcados</span>
+                            <span class="esp-tag">Segurança</span>
+                            <span class="esp-tag">Redes</span>
+                            <span class="esp-tag">Banco de Dados</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="af-section-title">Tecnologias &amp; Linguagens</p>
+                        <div class="tech-list" id="tech-list">
+                            <div class="tech-row">
+                                <div class="tech-header">
+                                    <span class="tech-name">C#</span>
+                                    <span class="tech-pct">98%</span>
+                                </div>
+                                <div class="progress-track"><div class="progress-fill" style="width:98%"></div></div>
+                            </div>
+                            <div class="tech-row">
+                                <div class="tech-header">
+                                    <span class="tech-name">HTML</span>
+                                    <span class="tech-pct">54%</span>
+                                </div>
+                                <div class="progress-track"><div class="progress-fill" style="width:54%"></div></div>
+                            </div>
+                            <div class="tech-row">
+                                <div class="tech-header">
+                                    <span class="tech-name">CSS</span>
+                                    <span class="tech-pct">23%</span>
+                                </div>
+                                <div class="progress-track"><div class="progress-fill progress-fill-teal" style="width:23%"></div></div>
+                            </div>
+                            <div class="tech-row">
+                                <div class="tech-header">
+                                    <span class="tech-name">SQL</span>
+                                    <span class="tech-pct">71%</span>
+                                </div>
+                                <div class="progress-track"><div class="progress-fill" style="width:71%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side col -->
+            <div class="side-col">
+
+                <!-- Perfil -->
+                <div class="card profile-card">
+                    <div style="position:relative;display:inline-block;margin-bottom:2px;">
+                        <div id="avatar-wrap" class="avatar avatar-lg"
+                             onclick="document.getElementById('avatar-input').click()"
+                             style="cursor:pointer;"
+                             onmouseenter="document.getElementById('avatar-overlay').style.opacity='1'"
+                             onmouseleave="document.getElementById('avatar-overlay').style.opacity='0'">
+                            <span id="avatar-initials">JS</span>
+                            <img id="avatar-img" src="" alt=""
+                                 style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;" />
+                        </div>
+                        <div id="avatar-overlay"
+                             onclick="document.getElementById('avatar-input').click()"
+                             style="position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,0.52);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;cursor:pointer;">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#76C057" stroke-width="2">
+                                <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+                                <circle cx="12" cy="13" r="4"/>
+                            </svg>
+                        </div>
+                        <input type="file" id="avatar-input" accept="image/*"
+                               style="display:none;" onchange="handleAvatarUpload(event)" />
+                    </div>
+
+                    <p style="font-size:14px;font-weight:600;color:var(--text-100);margin-top:10px;">João Silva</p>
+                    <p class="label mt-1">RA · 2021004892</p>
+
+                    <div class="profile-stats mt-3">
+                        <div>
+                            <p class="profile-stat-val">6°</p>
+                            <p class="text-xxs text-muted">Semestre</p>
+                        </div>
+                        <div>
+                            <p class="profile-stat-val">8.4</p>
+                            <p class="text-xxs text-muted">Média</p>
+                        </div>
+                        <div>
+                            <p class="profile-stat-val">87%</p>
+                            <p class="text-xxs text-muted">Freq.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botão adicionar -->
+                <div class="card" onclick="openModal()"
+                     style="cursor:pointer;text-align:center;padding:20px 16px;transition:all 0.2s;"
+                     onmouseenter="this.style.borderColor='rgba(118,192,87,0.35)'"
+                     onmouseleave="this.style.borderColor='var(--border)'">
+                    <div style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(118,192,87,0.25);background:rgba(118,192,87,0.07);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#76C057" stroke-width="2">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                    </div>
+                    <p class="label-lime" style="margin-bottom:3px;">a adicionar</p>
+                    <p class="text-xs text-muted">Especialidades e tecnologias</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+    <div class="modal">
+        <h2 class="modal-title">Editar Perfil Técnico</h2>
+        <p class="modal-sub">Adicione especialidades e nível em cada tecnologia</p>
+
+        <div class="modal-tabs">
+            <button class="modal-tab active" onclick="switchTab(this,'tab-tech')">Tecnologias</button>
+            <button class="modal-tab" onclick="switchTab(this,'tab-esp')">Especialidades</button>
+        </div>
+
+        <div id="tab-tech">
+            <div class="modal-field">
+                <label>Nome da tecnologia / linguagem</label>
+                <input class="input-field" id="tech-name-input" type="text" placeholder="ex: Python, Docker, C..." />
+            </div>
+            <div class="modal-field">
+                <label>Nível de proficiência</label>
+                <input class="modal-range" id="tech-range" type="range" min="1" max="100" value="50"
+                       oninput="document.getElementById('range-display').textContent = this.value + '%'" />
+                <div class="range-val" id="range-display">50%</div>
+            </div>
+            <button class="btn btn-outline" style="width:100%;" onclick="addTech()">+ Adicionar tecnologia</button>
+        </div>
+
+        <div id="tab-esp" style="display:none;">
+            <div class="modal-field">
+                <label>Nome da especialidade</label>
+                <input class="input-field" id="esp-name-input" type="text" placeholder="ex: Machine Learning, DevOps..." />
+            </div>
+            <button class="btn btn-outline" style="width:100%;" onclick="addEsp()">+ Adicionar especialidade</button>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn btn-outline" style="flex:1;" onclick="closeModal()">Cancelar</button>
+            <button class="btn btn-primary" style="flex:1;" onclick="closeModal()">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* Biografia */
+    const MAX_BIO = 300;
+    function saveBio(el) {
+        if (el.value.length > MAX_BIO) el.value = el.value.slice(0, MAX_BIO);
+        document.getElementById('bio-counter').textContent = el.value.length + ' / ' + MAX_BIO;
+    }
+
+    /* Avatar upload */
+    function handleAvatarUpload(event) {
+        const file = event.target.files[0];
+        if (!file || !file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = document.getElementById('avatar-img');
+            img.src = e.target.result;
+            img.style.display = 'block';
+            document.getElementById('avatar-initials').style.display = 'none';
+            const wrap = document.getElementById('avatar-wrap');
+            wrap.style.background = 'transparent';
+            wrap.style.border = '2px solid rgba(118,192,87,0.4)';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    /* Modal */
+    function openModal()  { document.getElementById('modal').classList.add('open'); }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+    function handleOverlayClick(e) { if (e.target.id === 'modal') closeModal(); }
+
+    function switchTab(btn, tabId) {
+        document.querySelectorAll('.modal-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        ['tab-tech','tab-esp'].forEach(id => document.getElementById(id).style.display = 'none');
+        document.getElementById(tabId).style.display = 'block';
+    }
+
+    function addTech() {
+        const name = document.getElementById('tech-name-input').value.trim();
+        const pct  = document.getElementById('tech-range').value;
+        if (!name) return;
+        const row = document.createElement('div');
+        row.className = 'tech-row';
+        row.innerHTML = `
+            <div class="tech-header">
+                <span class="tech-name">${name}</span>
+                <span class="tech-pct">${pct}%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+        document.getElementById('tech-list').appendChild(row);
+        document.getElementById('tech-name-input').value = '';
+        document.getElementById('tech-range').value = 50;
+        document.getElementById('range-display').textContent = '50%';
+    }
+
+    function addEsp() {
+        const name = document.getElementById('esp-name-input').value.trim();
+        if (!name) return;
+        const tag = document.createElement('span');
+        tag.className = 'esp-tag';
+        tag.textContent = name;
+        document.getElementById('esp-list').appendChild(tag);
+        document.getElementById('esp-name-input').value = '';
+    }
+</script>
+</body>
+</html>

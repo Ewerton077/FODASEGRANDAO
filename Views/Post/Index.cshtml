@@ -1,0 +1,98 @@
+@{
+    ViewData["Title"] = "Posts Institucionais";
+    Layout = null;
+}
+@model List<backendconfigconecta.Models.Post>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduSys — Posts Institucionais</title>
+    <link rel="stylesheet" href="~/css/geral.css" />
+    <style>
+        :root {
+            --brand-lime: #1EB53A;
+            --brand-lime-dark: #008744;
+            --brand-teal: #08785B;
+            --font-sans: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', monospace;
+            --bg-deep: #051211;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --border: rgba(30, 181, 58, 0.15);
+            --border-strong: rgba(30, 181, 58, 0.30);
+            --text-100: #1a2e1a;
+            --text-200: #1a3d1a;
+            --text-400: #4a7a4a;
+            --text-600: #6a9a6a;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+        }
+        body { background: linear-gradient(165deg, #051211 0%, #0B2B28 50%, #051211 100%); font-family: var(--font-sans); }
+        .posts-page { min-height: 100vh; padding: 40px 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-title { font-size: 28px; font-weight: 700; color: var(--text-100); }
+        .page-title span { color: var(--brand-lime); }
+        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; }
+        .post-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: border-color 0.22s, box-shadow 0.22s, transform 0.22s;
+        }
+        .post-card:hover { border-color: var(--border-strong); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); transform: translateY(-2px); }
+        .post-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 10px; }
+        .post-title { font-size: 18px; font-weight: 600; color: var(--text-100); }
+        .post-date { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-400); padding: 4px 10px; background: rgba(30,181,58,0.05); border-radius: 999px; }
+        .post-body { font-size: 14px; color: var(--text-400); line-height: 1.6; margin-bottom: 16px; }
+        .post-image { width: 100%; height: 180px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 12px; }
+        .post-author { font-family: var(--font-mono); font-size: 11px; color: var(--brand-teal); }
+        .back-link { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; color: var(--brand-lime); text-decoration: none; font-size: 12px; }
+        .back-link:hover { color: var(--brand-lime-dark); }
+        .no-posts { text-align: center; padding: 60px; color: var(--text-400); }
+    </style>
+</head>
+<body>
+    <div class="posts-page">
+        <div class="container">
+            <a href="@Url.Action("Index", "Home")" class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Voltar ao início
+            </a>
+            <div class="page-header">
+                <h1 class="page-title">Posts <span>Institucionais</span></h1>
+            </div>
+            @if (Model == null || Model.Count == 0)
+            {
+                <div class="no-posts">
+                    <p>Nenhum post publicado ainda.</p>
+                </div>
+            }
+            else
+            {
+                <div class="posts-grid">
+                    @foreach (var post in Model)
+                    {
+                        <article class="post-card">
+                            @if (post.ImagemData != null && !string.IsNullOrEmpty(post.ImagemTipo))
+                            {
+                                <img src="data:@post.ImagemTipo;base64,@Convert.ToBase64String(post.ImagemData)" alt="@post.Titulo" class="post-image" />
+                            }
+                            <div class="post-header">
+                                <h3 class="post-title">@post.Titulo</h3>
+                                <span class="post-date">@post.DataCriacao.ToString("dd/MM")</span>
+                            </div>
+                            <p class="post-body">@post.Descricao</p>
+                            <p class="post-author">por @post.Usuario?.Nome</p>
+                        </article>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

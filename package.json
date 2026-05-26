@@ -1,0 +1,13 @@
+{
+  "name": "mybackpoint",
+  "version": "1.0.0",
+  "scripts": {
+    "watch:css": "npx tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/output.css --watch",
+    "build:css": "npx tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/output.css",
+    "start": "concurrently \"dotnet watch run\" \"npm run watch:css\""
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "concurrently": "^8.2.0"
+  }
+}

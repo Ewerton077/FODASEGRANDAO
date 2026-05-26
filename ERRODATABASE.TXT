@@ -1,0 +1,242 @@
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────── -->
+<header class="header" id="header">
+    <nav class="navbar">
+        <a href="#home" class="navbar-brand" style="text-decoration:none;">
+            <span class="navbar-brand-text">Barracred<span>Conecta</span></span>
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#sobre">Quem Somos</a></li>
+            <li><a href="#conteudo">Conteúdo</a></li>
+            <li><a href="#participar">Como Participar</a></li>
+            <li><a href="#equipe">Equipe</a></li>
+            <li><a asp-controller="AreaAluno" asp-action="Areaaluno_index" class="btn-aluno">Área do Aluno</a></li>
+            <li>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun" style="display:none;"></i>
+                </button>
+            </li>
+        </ul>
+        <button class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+</header>
+
+<!-- ── HERO ────────────────────────────────────────────────── -->
+<section id="home" class="hero" style="background-image: url('@Url.Content("~/css/imagens/porque_bg.png")');">
+    <div class="hero-overlay"></div>
+    <div class="decorative-line top"></div>
+    <div class="decorative-line bottom"></div>
+    <div class="hero-content">
+
+        <h1>Barracred <span>Conecta</span></h1>
+        <h2>Criando Oportunidades e Cooperando para o Futuro</h2>
+        <p>Um programa pensado para inspirar, capacitar e criar conexões com o futuro por meio da educação, do conhecimento e do desenvolvimento humano.</p>
+        <p class="destaque">Porque quando a gente coopera, a transformação acontece!</p>
+        <div class="hero-btns">
+            <a href="/inscricao" class="btn-primary-hero">
+                <i class="fas fa-clipboard-list"></i> Quero Me Inscrever
+            </a>
+            <a href="#sobre" class="btn-secondary-hero">Saiba Mais</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── SOBRE ────────────────────────────────────────────────── -->
+<section id="sobre" class="section sobre">
+    <div class="container">
+        <h2 class="section-title">O que é o Barracred Conecta?</h2>
+        <div class="sobre-content">
+            <div class="sobre-text">
+                <p>Uma porta de entrada para um novo mundo. Formamos jovens confiantes, preparados e conscientes, com aulas de TI, Inglês Técnico, Educação Financeira e Desenvolvimento de Habilidades Pessoais e Profissionais.</p>
+                <p>Além da formação técnica, oferecemos acompanhamento psicológico e apoio integral ao longo de toda a jornada.</p>
+                <p class="destaque">Totalmente gratuito, graças ao investimento da Cooperativa Barracred!</p>
+            </div>
+            <div class="sobre-beneficios">
+                <h3>O que a Barracred garante:</h3>
+                <ul class="beneficios-list">
+                    <li><i class="fas fa-check"></i> Material didático</li>
+                    <li><i class="fas fa-check"></i> Uniforme</li>
+                    <li><i class="fas fa-check"></i> Vale-transporte</li>
+                    <li><i class="fas fa-check"></i> Alimentação</li>
+                    <li><i class="fas fa-check"></i> Equipamentos individuais</li>
+                    <li><i class="fas fa-check"></i> Laboratório técnico equipado</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CONTEÚDO ─────────────────────────────────────────────── -->
+<section id="conteudo" class="section" style="background-color: #DBDBDB;">
+    <div class="container">
+        <h2 class="section-title">O que você vai aprender?</h2>
+        <div class="conteudo-grid">
+            <div class="conteudo-card"><i class="fas fa-brain"></i><h3>Habilidades Pessoais e Profissionais</h3><p>Autoconhecimento, empatia e competências para o mercado.</p></div>
+            <div class="conteudo-card"><i class="fas fa-laptop-code"></i><h3>Tecnologia da Informação</h3><p>De sistemas operacionais a programação, banco de dados e mobile.</p></div>
+            <div class="conteudo-card"><i class="fas fa-language"></i><h3>Inglês Técnico</h3><p>Vocabulário e expressões do mundo corporativo.</p></div>
+            <div class="conteudo-card"><i class="fas fa-people-carry"></i><h3>Cooperativismo na Prática</h3><p>Princípios e vivência do modelo colaborativo.</p></div>
+            <div class="conteudo-card"><i class="fas fa-microphone-alt"></i><h3>Palestras Imersivas</h3><p>Profissionais reais compartilhando experiências do mercado.</p></div>
+            <div class="conteudo-card"><i class="fas fa-graduation-cap"></i><h3>Estágios e Oportunidades</h3><p>Vagas reais via parcerias com empresas.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ── POR QUÊ ──────────────────────────────────────────────── -->
+<section class="section sectionporque" style="background-color: #F4F9F8; border-top: 1px solid rgba(74, 139, 130, 0.18); border-bottom: 1px solid rgba(74, 139, 130, 0.18);">
+    <div class="container">
+        <h2 class="section-title ">Por que fazemos o que fazemos?</h2>
+        <p class="section-subtitle">Quando um jovem é fortalecido, ele transforma não só a própria vida, mas também o mundo ao seu redor.</p>
+        <div class="missao-grid">
+            <div class="missao-card"><i class="fas fa-bullseye"></i><h4>Criar Oportunidades</h4><p>Para que os jovens ampliem sua visão de futuro.</p></div>
+            <div class="missao-card"><i class="fas fa-tools"></i><h4>Oferecer Ferramentas</h4><p>Para construir caminhos com confiança.</p></div>
+            <div class="missao-card"><i class="fas fa-users"></i><h4>Formar Talentos</h4><p>Comprometidos com o bem coletivo.</p></div>
+            <div class="missao-card"><i class="fas fa-handshake"></i><h4>Fortalecer o Cooperativismo</h4><p>Como modelo de transformação social.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ── PARTICIPAR ───────────────────────────────────────────── -->
+<section id="participar" class="section" style="background-color: #DBDBDB;">
+    <div class="container">
+        <h2 class="section-title">Quem pode participar?</h2>
+        <div class="participar-content">
+            <div class="participar-info">
+                <p>Destinado a <strong style="color:var(--lime-300)">jovens entre 16 e 20 anos</strong> que buscam transformação pessoal e profissional.</p>
+                <div class="participar-destaques">
+                    <div class="destaque-item"><i class="fas fa-clock"></i><span><strong>Duração:</strong> 10 meses</span></div>
+                    <div class="destaque-item"><i class="fas fa-users"></i><span><strong>Vagas:</strong> 20 por turma</span></div>
+                </div>
+                <div class="vagas-info">
+                    <div class="vaga-item"><span class="vaga-porcentagem">70%</span><span>Filhos/dependentes de cooperados Barracred</span></div>
+                    <div class="vaga-item"><span class="vaga-porcentagem">30%</span><span>Jovens da comunidade em geral</span></div>
+                </div>
+            </div>
+            <div class="requisitos-box">
+                <h3>Requisitos:</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Ter entre 16 e 20 anos</li>
+                    <li><i class="fas fa-check-circle"></i> Cursando ou ter concluído o ensino básico na <strong>rede pública</strong></li>
+                    <li><i class="fas fa-check-circle"></i> Residir em <strong>Barra Bonita</strong> ou <strong>Igaraçu do Tietê - SP</strong></li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Comprometimento</strong> para participar integralmente</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── QUICK STATS ──────────────────────────────────────────── -->
+<div class="bc-quickstats">
+    <div class="bc-quickstats-item">
+        <div class="bc-quickstats-num">20</div>
+        <div class="bc-quickstats-label">Jovens por Turma</div>
+    </div>
+    <div class="bc-quickstats-item">
+        <div class="bc-quickstats-num">10</div>
+        <div class="bc-quickstats-label">Meses de Formação</div>
+    </div>
+    <div class="bc-quickstats-item">
+        <div class="bc-quickstats-num">100%</div>
+        <div class="bc-quickstats-label">Gratuito</div>
+    </div>
+    <div class="bc-quickstats-item">
+        <div class="bc-quickstats-num">6</div>
+        <div class="bc-quickstats-label">Módulos de Conteúdo</div>
+    </div>
+</div>
+
+
+
+
+
+<!-- ── CTA ──────────────────────────────────────────────────── -->
+<section id="inscrever" class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Gostou do Programa?</h2>
+            <p>Faça parte desta transformação. Inscreva-se para as próximas turmas!</p>
+            <a href="/inscricao" class="btn-cta"><i class="fas fa-clipboard-list"></i> Quero Me Inscrever</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── EQUIPE ───────────────────────────────────────────────── -->
+<section id="equipe" class="section">
+    <div class="container">
+        <h2 class="section-title">Quem está com você nessa?</h2>
+        <p class="section-subtitle">Um time de profissionais dedicados à formação de jovens.</p>
+        <div class="equipe-grid">
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/andresa.jpg" alt="Andresa" /></div>
+                <h4>Andresa</h4><span class="cargo">Coordenadora</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/andresa-baratela-2b5544240/" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/andresabaratela/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/adilson.jpg" alt="Adilson" /></div>
+                <h4>Adilson</h4><span class="cargo">Assistente de Coordenação</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/adilson-nascimento-7b5a69b6" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/adilsonnascy/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/aline.jpg" alt="Prof Aline" /></div>
+                <h4>Profª Aline</h4><span class="cargo">Inglês Técnico</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/aline-pedra-07380381" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/alineropedra/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/cris.jpg" alt="Prof Cristiane" /></div>
+                <h4>Profª Cristiane</h4><span class="cargo">Hab. Pessoais e Profissionais</span>
+                <div class="equipe-social"><a href="https://www.instagram.com/_chris_alvess_/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/gallo2.jpg" alt="Prof Gallo" /></div>
+                <h4>Prof. Gallo</h4><span class="cargo">Tecnologia da Informação</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/gallo-junior/" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.github.com/gallojunior" target="_blank"><i class="fab fa-github"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/vera.jpg" alt="Prof Vera" /></div>
+                <h4>Profª Vera</h4><span class="cargo">Hab. Pessoais e Profissionais</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/vera-prado-scudeleti-b54912177/" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/veramaraprado/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<!-- ── FOOTER ───────────────────────────────────────────────── -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <span class="navbar-brand-text" style="font-size:18px;">Barracred<span>Conecta</span></span>
+            <p>Um programa social da Cooperativa Barracred para transformar a vida de jovens.</p>
+        </div>
+        <div class="footer-info">
+            <h4>Contato</h4>
+            <ul>
+                <li><a href="#">contato@barracredconecta.com.br</a></li>
+                <li><a href="#">Barra Bonita - SP</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Links</h4>
+            <ul>
+                <li><a href="#sobre">Quem Somos</a></li>
+                <li><a href="#conteudo">Conteúdo</a></li>
+                <li><a href="#participar">Como Participar</a></li>
+                <li><a asp-controller="Account" asp-action="Login">Área do Aluno</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 Barracred Conecta · Cooperativa Barracred · Todos os direitos reservados</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/551400000000" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>

@@ -1,0 +1,413 @@
+@model backendconfigconecta.Controllers.LoginViewModel
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduSys — Login</title>
+    <link rel="stylesheet" href="~/css/geral.css" />
+    <style>
+        :root {
+            --brand-lime:        #1EB53A;
+            --brand-lime-dark:   #008744;
+            --brand-lime-light:  #31f301;
+            --brand-green:       #1EB53A;
+            --brand-green-mid:   #008744;
+            --brand-green-dark:  #004438;
+            --brand-teal:        #08785B;
+            --brand-cyan:        #07A5BF;
+            --brand-blue:        #316BA5;
+            --brand-orange:      #FF6600;
+            --brand-yellow:      #FFC000;
+
+            --bg:                #FFFFFF;
+            --bg-section:        #F4F9F8;
+            --bg-section-alt:    #EAEFED;
+            --bg-card:           #FFFFFF;
+            --bg-hero-overlay:   rgba(0, 68, 56, 0.78);
+
+            --text-100:          #1a2e28;
+            --text-200:          #213d35;
+            --text-400:          #3a5a50;
+            --text-600:          #5c7a71;
+            --text-800:          #8aada4;
+
+            --border:            rgba(8, 120, 91, 0.18);
+            --border-hover:      rgba(161, 188, 33, 0.6);
+            --border-card:       rgba(8, 120, 91, 0.22);
+
+            --shadow-sm:         0 2px 8px rgba(0,68,56,0.08);
+            --shadow-md:         0 4px 20px rgba(0,68,56,0.12);
+
+            --radius-sm:         4px;
+            --radius-md:         8px;
+            --radius-lg:         12px;
+            --radius-xl:         16px;
+            --radius-full:       9999px;
+
+            --font-sans:         'Segoe UI', system-ui, sans-serif;
+            --font-mono:         'SF Mono', 'Fira Code', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: var(--font-sans);
+            color: var(--text-200);
+        }
+
+        .login-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 32px;
+            background: rgba(0, 0, 0, 0.445);
+            backdrop-filter: blur(1.3px);
+            border-bottom: 1px solid rgba(161,188,33,0.3);
+        }
+
+        .navbar-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            color: rgba(255,255,255,0.75);
+            font-family: var(--font-mono);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--brand-lime);
+            box-shadow: 0 0 6px var(--brand-lime);
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .login-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+        }
+
+        .login-card {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-xl);
+            padding: 40px 36px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--brand-green-mid), var(--brand-lime), var(--brand-lime-light));
+        }
+
+        .login-card::after { display: none; }
+
+        .role-toggle {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: var(--bg-section);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 9px 0;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-600);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .role-btn:hover { background: rgba(30,181,58,0.08); }
+
+        .role-btn.active {
+            background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-green-mid) 100%);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .login-card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-100);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .login-card-subtitle {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-600);
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .login-form { display: flex; flex-direction: column; gap: 16px; }
+
+        .login-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-600);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .login-input {
+            width: 100%;
+            background: var(--bg-section);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 15px;
+            color: var(--text-200);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .login-input::placeholder { color: var(--text-800); }
+
+        .login-input:focus {
+            border-color: var(--brand-lime);
+            background: var(--bg);
+            box-shadow: 0 0 0 3px rgba(30,181,58,0.12);
+        }
+
+        .login-check-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-check-row input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            accent-color: var(--brand-lime);
+            cursor: pointer;
+        }
+
+        .login-check-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-600);
+            cursor: pointer;
+        }
+
+        .login-submit {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-green-mid) 100%);
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(30,181,58,0.25);
+            transition: all 0.22s;
+            margin-top: 4px;
+        }
+
+        .login-submit:hover {
+            box-shadow: 0 6px 24px rgba(30,181,58,0.35);
+            transform: translateY(-1px);
+        }
+
+        .text-danger {
+            color: #f87171;
+            font-size: 11px;
+            font-family: var(--font-mono);
+            display: block;
+            margin-top: 4px;
+        }
+
+        .validation-summary {
+            background: rgba(248,113,113,0.08);
+            border: 1px solid rgba(248,113,113,0.2);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            color: #f87171;
+            font-size: 12px;
+            font-family: var(--font-mono);
+        }
+
+        .login-status-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-top: 16px;
+            margin-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .login-status-bar span { color: var(--text-600) !important; font-family: var(--font-mono) !important; }
+
+        .login-test-creds {
+            margin-top: 14px;
+            padding: 12px 14px;
+            background: var(--bg-section);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+        }
+
+        .login-test-title {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-600);
+            margin-bottom: 8px;
+        }
+
+        .login-test-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+        }
+
+        .login-test-role {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-400);
+        }
+
+        .login-test-val {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-800);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="login-nav">
+        <div class="navbar-brand">
+            <img src="~/css/imagens/logo_conecta 2.png" alt="Barracred Conecta" style="height:36px; width:auto;" />
+        </div>
+        </div>
+    </nav>
+
+    <div class="login-body">
+        <div class="login-card">
+
+            <!--<div class="role-toggle">
+                <button type="button" class="role-btn active" onclick="setRole(this,'Aluno')">ALUNO</button>
+                <button type="button" class="role-btn" onclick="setRole(this,'Professor')">PROFESSOR</button>
+                <button type="button" class="role-btn" onclick="setRole(this,'Admin')">ADMIN</button>
+            </div>-->
+
+            <h1 class="login-card-title">Acesso ao sistema</h1>
+            <p class="login-card-subtitle">Insira suas credenciais</p>
+
+            <form class="login-form" asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+                <input type="hidden" id="role-input" name="role" value="Aluno" />
+
+                <div>
+                    <label asp-for="Email" class="login-label">User_ID</label>
+                    <input asp-for="Email" class="login-input" placeholder="seu@email.edu" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Password" class="login-label">Pass_Key</label>
+                    <input asp-for="Password" class="login-input" type="password" placeholder="••••••••" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="login-check-row">
+                    <input asp-for="RememberMe" type="checkbox" id="RememberMe" />
+                    <label asp-for="RememberMe" class="login-check-label">Lembrar-me</label>
+                </div>
+
+                <button type="submit" class="login-submit">ENTRAR_</button>
+            </form>
+
+            <div class="login-status-bar">
+                <span class="status-dot"></span>
+                <span style="font-size:10px;color:#76C057;font-family:monospace;">SESSÃO SEGURA · TLS 1.3</span>
+            </div>
+
+            <div class="login-test-creds">
+                <p class="login-test-title">Usuários de teste</p>
+                <div class="login-test-row">
+                    <span class="login-test-role">Aluno 1</span>
+                    <span class="login-test-val">aluno1@teste.com · Aluno@123</span>
+                </div>
+                <div class="login-test-row">
+                    <span class="login-test-role">Aluno 2</span>
+                    <span class="login-test-val">aluno2@teste.com · Aluno@123</span>
+                </div>
+                <div class="login-test-row">
+                    <span class="login-test-role">Aluno 3</span>
+                    <span class="login-test-val">aluno3@teste.com · Aluno@123</span>
+                </div>
+                <div class="login-test-row">
+                    <span class="login-test-role">Professor 1</span>
+                    <span class="login-test-val">professor1@teste.com · Professor@123</span>
+                </div>
+                <div class="login-test-row">
+                    <span class="login-test-role">Professor 2</span>
+                    <span class="login-test-val">professor2@teste.com · Professor@123</span>
+                </div>
+                <div class="login-test-row">
+                    <span class="login-test-role">Professor 3</span>
+                    <span class="login-test-val">professor3@teste.com · Professor@123</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function setRole(btn, label) {
+            document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('role-input').value = label;
+        }
+    </script>
+</body>
+</html>

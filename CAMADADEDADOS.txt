@@ -1,0 +1,16 @@
+ -- criar a camada de dados:
+    | dotnet add package Microsoft.EntityFrameworkCore --version 9.0.13 //instalar as dependencias de acordo com a versao
+    | dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.13 
+    | dotnet add package Microsoft.EntityFrameworkCore.Tools --version 9.0.13
+    | dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 9.0.13
+
+    o sqlserver permite a conexao com o banco, e os outros permitem a manipulação
+    | dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore --version 9.0.13
+    criptografia de dados de usuario
+
+
+    camada de dados (models)
+
+
+SERVIDOR CONECTA APPSETTINGS JSON
+"Server=DSKBCC09\\SQLEXPRESS;Database=CONECTA_DB;User Id = sa;Password=!Abc123;TrustServerCertificate=true;Encrypt=false"

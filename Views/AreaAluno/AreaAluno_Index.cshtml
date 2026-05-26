@@ -1,0 +1,1667 @@
+@{
+    Layout = null;
+}
+@model List<backendconfigconecta.Models.Post>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Área Pública — Barracred Conecta</title>
+    <link rel="stylesheet" href="~/css/geral.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<style>
+
+/* ══════════════════════════════════════════════════════
+   TOKENS DE TEMA (espelha o Index.cshtml)
+   ══════════════════════════════════════════════════════ */
+:root,
+[data-theme="light"] {
+    --bc-bg:           #FFFFFF;
+
+    --bc-teal:         #ffffff;
+    --bc-lime:         var(--green-primary);
+    --bc-lime-lt:      var(--green-soft);
+    --bc-lime-dk:      var(--green-forest);
+    --bc-lime-900:     var(--green-pale);
+
+    /* NOVOS TONS DE VERDE PARA DESIGN */
+    --green-deep:      #0B5E3A;
+    --green-forest:    #1E7B4A;
+    --green-primary:   #2E9B5C;
+    --green-soft:      #4BBF7A;
+    --green-mint:      #8BE5A6;
+    --green-pale:      #C6F2D4;
+    --green-glass:     rgba(46, 155, 92, 0.12);
+    --green-glow:      rgba(46, 155, 92, 0.25);
+
+    --bc-border:       var(--green-deep);
+    --bc-border-h:     var(--green-primary);
+
+    --bc-text:         #004438;
+    --bc-muted:        var(--green-primary);
+    --bc-dim:          #ffffff;
+
+    --bc-body-bg:      #FFFFFF;
+    --bc-body-glow-1:  rgba(255, 255, 255, 0.25);
+    --bc-body-glow-2:  var(--green-glass);
+
+    --bc-section-alt:  rgba(255,255,255,0.8);
+
+    --bc-card:         rgba(255,255,255,0.93);
+    --bc-card-alt:     rgba(198, 242, 212, 0.4);
+    --bc-card-hover:   #FFFFFF;
+
+    --bc-text-primary: #ffffff;
+    --bc-text-body:    #ffffff;
+    --bc-text-body2:#4BBF7A;
+    --bc-text-sec:     #ffffff;
+    --bc-title:        #ffffff;
+
+    --bc-header-bg:    rgba(255, 255, 255, 0.85);
+    --bc-header-border:rgba(255, 255, 255, 0.2);
+
+    --bc-nav-color:    #ffffff;
+    --bc-nav-hover:    #ffffff;
+
+    --bc-stat-bg:      rgba(255,255,255,0.9);
+    --bc-stat-hover:   rgba(198, 242, 212, 0.8);
+
+    --bc-tag-oport:    var(--green-glass);
+    --bc-tag-oport-b:  var(--green-glow);
+
+    --bc-shadow:       rgba(11, 94, 58, 0.08);
+
+    --bc-sans:         'Segoe UI', system-ui, sans-serif;
+    --bc-mono:         'SF Mono', 'Fira Code', monospace;
+}
+/* ── BASE ─────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bc-body-bg);
+    color: var(--bc-text-primary);
+    font-family: var(--bc-sans);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+        radial-gradient(ellipse 70% 50% at 15% 0%,   var(--bc-body-glow-1) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 100%, var(--bc-body-glow-2) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ── SCROLLBAR ────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bc-body-bg); }
+::-webkit-scrollbar-thumb { background: var(--bc-border); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--bc-teal); }
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER (estilo igual ao código referência)
+   ═══════════════════════════════════════════════════════════════ */
+.pa-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(1.3px);
+    -webkit-backdrop-filter: blur(1.3px);
+    border-bottom: 1px solid transparent;
+    transition: box-shadow 0.3s, background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+}
+
+.pa-header.scrolled {
+    background: rgba(0, 0, 0, 0.445);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.199);
+    border-bottom: 1px solid rgba(161, 188, 33, 0.3);
+}
+
+.pa-header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.pa-header-brand img {
+    height: 50px;
+    width: auto;
+}
+
+.pa-header-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.pa-nav-link {
+    font-family: var(--bc-mono);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    transition: color 0.2s;
+    position: relative;
+    padding: 0;
+    background: none;
+}
+
+.pa-nav-link:hover {
+    color: var(--green-primary);
+    background: none;
+}
+
+.pa-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--green-primary);
+    transition: width 0.3s;
+}
+
+.pa-nav-link:hover::after {
+    width: 100%;
+}
+
+.pa-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pa-btn-login {
+    background: rgba(161, 188, 33, 0.32)  !important;
+    color: var(--green-primary) !important;
+    border: 1px solid rgba(144, 167, 33, 0.32) !important;
+    padding: 0.5rem 1.5rem !important;
+    border-radius: var(--radius-full, 9999px) !important;
+    font-family: var(--bc-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: background 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: none;
+    transform: none;
+}
+
+.pa-btn-login:hover {
+    background: rgba(255, 255, 255, 0.534)  !important;
+    color: #ffffff !important;
+    transform: none;
+    box-shadow: none;
+}
+
+.pa-header-nav {
+    display: flex; align-items: center; gap: 4px;
+}
+
+.pa-nav-link {
+    font-family: var(--bc-mono);
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--bc-nav-color);
+    padding: 6px 12px; border-radius: var(--bc-r-sm);
+    transition: color 0.2s, background 0.2s;
+    cursor: pointer; border: none; background: none;
+}
+.pa-nav-link:hover { color: var(--bc-nav-hover); background: var(--bc-card-alt); }
+
+.pa-header-actions { display: flex; align-items: center; gap: 10px; }
+
+.pa-btn-login {
+    display: flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-forest) 100%);
+    color: var(--green-pale);
+    font-family: var(--bc-mono); font-size: 9px; letter-spacing: 0.16em;
+    font-weight: 700; padding: 7px 16px; border-radius: var(--bc-r-md);
+    transition: all 0.2s; border: none; cursor: pointer;
+    box-shadow: 0 2px 10px var(--green-glow);
+}
+.pa-btn-login:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--green-glow); }
+
+/* ── HERO DA PÁGINA ───────────────────────────────── */
+.pa-hero {
+    position: relative; z-index: 1;
+    padding: 64px 32px 48px;
+    border-bottom: 1px solid var(--bc-border);
+    overflow: hidden;
+    background-image: url('/css/imagens/bannerfundo.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.pa-hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(var(--bc-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--bc-border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.pa-hero-content {
+    max-width: 1180px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center; gap: 48px;
+}
+
+.pa-hero-eyebrow {
+    font-family: var(--bc-mono); font-size: 10px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--bc-muted); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+}
+.pa-hero-eyebrow::before {
+    content: '';
+    display: inline-block; width: 20px; height: 1px;
+    background: var(--green-primary);
+}
+
+.pa-hero h1 {
+    font-size: 2.8rem; font-weight: 800; line-height: 1.1;
+    color: var(--bc-title); margin-bottom: 12px;
+    font-family: var(--bc-sans);
+}
+.pa-hero h1 span { color: var(--bc-text-primary); }
+
+.pa-hero p {
+    font-size: 1rem; color: var(--bc-text-body2);
+    max-width: 560px; line-height: 1.7;
+}
+
+.pa-hero-stats {
+    display: flex; flex-direction: column; gap: 2px;
+    background: var(--bc-card);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-xl);
+    padding: 24px 28px;
+    backdrop-filter: blur(16px);
+    min-width: 200px;
+}
+
+.pa-hero-stat-item { text-align: center; padding: 12px 0; }
+.pa-hero-stat-item + .pa-hero-stat-item { border-top: 1px solid var(--bc-border); }
+
+.pa-hero-stat-num {
+    font-family: var(--bc-mono); font-size: 28px; font-weight: 700;
+    color: var(--green-primary); line-height: 1;
+}
+.pa-hero-stat-label {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--bc-muted); margin-top: 4px;
+}
+
+/* ── LAYOUT GERAL ─────────────────────────────────── */
+.pa-container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+.pa-section { padding: 56px 0; position: relative; z-index: 1; }
+.pa-section-alt {
+    background: var(--bc-section-alt);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--bc-border);
+    border-bottom: 1px solid var(--bc-border);
+}
+
+.pa-section-header { margin-bottom: 36px; }
+.pa-section-eyebrow {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--bc-muted); margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+}
+.pa-section-eyebrow i { font-size: 10px; color: var(--green-primary); }
+
+.pa-section-title {
+    font-size: 1.7rem; font-weight: 700;
+    color: var(--bc-title); line-height: 1.2;
+}
+
+.pa-section-desc {
+    font-size: 0.9rem; color: var(--bc-text-body2);
+    margin-top: 8px; max-width: 600px;
+}
+
+/* ── PAINEL INDICADORES ───────────────────────────── */
+.pa-indicators-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+}
+
+.pa-indicator-card {
+    background: var(--bc-card);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-lg);
+    padding: 24px 20px;
+    backdrop-filter: blur(16px);
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+}
+.pa-indicator-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green-primary), transparent);
+    opacity: 0; transition: opacity 0.2s;
+}
+.pa-indicator-card:hover::before { opacity: 1; }
+.pa-indicator-card:hover {
+    border-color: var(--bc-border-h);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px var(--bc-shadow);
+}
+
+.pa-ind-icon {
+    width: 44px; height: 44px;
+    background: var(--green-glass);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-md);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 18px; color: var(--green-primary);
+}
+
+.pa-ind-value {
+    font-family: var(--bc-mono); font-size: 2rem; font-weight: 700;
+    color: var(--green-primary); line-height: 1; margin-bottom: 6px;
+}
+
+.pa-ind-label {
+    font-size: 0.78rem; color: var(--bc-text-body2);
+    line-height: 1.3;
+}
+
+/* ── BANCO DE TALENTOS ────────────────────────────── */
+.pa-talentos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.pa-talento-card {
+    background: var(--bc-card);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-lg);
+    padding: 24px 20px;
+    backdrop-filter: blur(14px);
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+}
+.pa-talento-card:hover {
+    border-color: var(--bc-border-h);
+    transform: translateY(-3px);
+}
+
+.pa-talento-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 14px;
+    border: 2px solid var(--bc-border-h);
+    box-shadow: 0 0 16px var(--green-glow);
+    background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-forest) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--bc-mono); font-size: 22px; font-weight: 700;
+    color: var(--green-pale);
+}
+
+.pa-talento-name {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--bc-text-primary); margin-bottom: 2px;
+}
+
+.pa-talento-role {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green-primary); margin-bottom: 10px;
+}
+
+.pa-talento-turma {
+    font-size: 0.78rem; color: var(--bc-text-body2); margin-bottom: 12px;
+}
+
+.pa-talento-tags {
+    display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;
+    margin-bottom: 14px;
+}
+
+.pa-tag {
+    font-family: var(--bc-mono); font-size: 8px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--bc-r-full);
+    background: var(--bc-tag-oport);
+    border: 1px solid var(--bc-tag-oport-b);
+    color: var(--green-primary);
+}
+.pa-tag-teal {
+    background: rgba(46,155,92,0.08);
+    border-color: var(--green-glow);
+    color: var(--green-soft);
+}
+
+.pa-talento-links {
+    display: flex; justify-content: center; gap: 8px;
+}
+.pa-talento-links a {
+    width: 30px; height: 30px;
+    border-radius: var(--bc-r-sm);
+    background: var(--bc-card-alt);
+    border: 1px solid var(--bc-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--bc-muted);
+    transition: all 0.2s;
+}
+.pa-talento-links a:hover { border-color: var(--bc-border-h); color: var(--green-primary); }
+
+/* ── BLOG ─────────────────────────────────────────── */
+.pa-blog-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 20px;
+}
+
+.pa-blog-featured {
+    background: var(--bc-card);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-xl);
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    transition: border-color 0.2s;
+    cursor: pointer;
+}
+.pa-blog-featured:hover { border-color: var(--bc-border-h); }
+
+.pa-blog-featured-img {
+    width: 100%; height: 260px;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-forest) 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+}
+.pa-blog-featured-img img { width: 100%; height: 100%; object-fit: cover; }
+.pa-blog-featured-img-placeholder {
+    font-size: 48px; color: var(--bc-border);
+}
+
+.pa-blog-featured-cat {
+    position: absolute; top: 16px; left: 16px;
+}
+
+.pa-cat-badge {
+    font-family: var(--bc-mono); font-size: 8px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: var(--bc-r-full);
+    background: rgba(11,43,40,0.85);
+    border: 1px solid var(--bc-border-h);
+    color: var(--green-primary);
+    backdrop-filter: blur(8px);
+}
+.pa-cat-badge.aulas      { border-color: var(--green-primary); color: var(--green-primary); }
+.pa-cat-badge.talk       { border-color: var(--green-soft); color: var(--green-soft); }
+.pa-cat-badge.visita     { border-color: var(--green-mint); color: var(--green-mint); }
+.pa-cat-badge.evento     { border-color: #ffffff; color: #ffffff; }
+.pa-cat-badge.depoimento { border-color: var(--green-soft); color: var(--green-soft); }
+
+.pa-blog-featured-body { padding: 24px; }
+.pa-blog-featured-meta {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.12em; color: var(--bc-muted);
+    margin-bottom: 10px;
+}
+.pa-blog-featured-meta i { font-size: 9px; }
+
+.pa-blog-featured-title {
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--bc-text-primary); line-height: 1.3;
+    margin-bottom: 10px;
+}
+.pa-blog-featured-desc {
+    font-size: 0.85rem; color: var(--bc-text-body2); line-height: 1.6;
+    margin-bottom: 16px;
+}
+.pa-btn-read {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--green-primary); border: 1px solid var(--bc-border-h);
+    padding: 7px 14px; border-radius: var(--bc-r-md);
+    background: var(--green-glass);
+    transition: all 0.2s;
+}
+.pa-btn-read:hover { background: var(--green-glow); }
+
+/* Blog sidebar list */
+.pa-blog-side {
+    display: flex; flex-direction: column; gap: 12px;
+}
+
+.pa-blog-list-item {
+    background: var(--bc-card);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-lg);
+    overflow: hidden;
+    display: flex; gap: 0;
+    backdrop-filter: blur(14px);
+    transition: border-color 0.2s;
+    cursor: pointer;
+}
+.pa-blog-list-item:hover { border-color: var(--bc-border-h); }
+
+.pa-blog-list-thumb {
+    width: 90px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-forest) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; color: var(--bc-border);
+    position: relative; overflow: hidden;
+}
+.pa-blog-list-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.pa-blog-list-body { padding: 14px 16px; flex: 1; }
+.pa-blog-list-cat { margin-bottom: 4px; }
+.pa-blog-list-title {
+    font-size: 0.85rem; font-weight: 600;
+    color: var(--bc-text-primary); line-height: 1.3; margin-bottom: 4px;
+}
+.pa-blog-list-date {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.1em; color: var(--bc-muted);
+}
+
+/* filtros blog */
+.pa-blog-filters {
+    display: flex; gap: 6px; margin-bottom: 28px; flex-wrap: wrap;
+}
+.pa-filter-btn {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: var(--bc-r-full);
+    border: 1px solid var(--bc-border);
+    background: var(--bc-card-alt); color: var(--bc-muted);
+    cursor: pointer; transition: all 0.2s;
+}
+.pa-filter-btn:hover,
+.pa-filter-btn.active {
+    border-color: var(--bc-border-h);
+    background: var(--green-glass);
+    color: var(--green-primary);
+}
+
+/* ── GALERIA ──────────────────────────────────────── */
+.pa-galeria-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+.pa-galeria-grid .span2 { grid-column: span 2; }
+
+.pa-galeria-item {
+    border-radius: var(--bc-r-lg);
+    overflow: hidden;
+    border: 1px solid var(--bc-border);
+    position: relative; cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+    aspect-ratio: 4/3;
+    background: var(--green-deep);
+    display: flex; align-items: center; justify-content: center;
+}
+.pa-galeria-item.span2 { aspect-ratio: 16/7; }
+
+.pa-galeria-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s;
+}
+.pa-galeria-item:hover img { transform: scale(1.04); }
+.pa-galeria-item:hover { border-color: var(--bc-border-h); transform: translateY(-2px); }
+
+.pa-galeria-placeholder {
+    font-size: 32px; color: var(--bc-border);
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+}
+
+.pa-galeria-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(11,94,58,0.85) 0%, transparent 50%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 16px;
+}
+.pa-galeria-item:hover .pa-galeria-overlay { opacity: 1; }
+
+.pa-galeria-info { }
+.pa-galeria-title {
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--bc-text); margin-bottom: 2px;
+}
+.pa-galeria-date {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.1em; color: var(--bc-muted);
+}
+
+/* ── OPORTUNIDADES ────────────────────────────────── */
+.pa-oport-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.pa-oport-card {
+    background: var(--bc-card);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-lg);
+    padding: 22px;
+    backdrop-filter: blur(14px);
+    transition: border-color 0.2s, transform 0.2s;
+    display: flex; flex-direction: column; gap: 12px;
+}
+.pa-oport-card:hover {
+    border-color: var(--bc-border-h);
+    transform: translateY(-2px);
+}
+
+.pa-oport-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+
+.pa-oport-type {
+    font-family: var(--bc-mono); font-size: 8px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--bc-r-full);
+    background: var(--bc-tag-oport);
+    border: 1px solid var(--bc-tag-oport-b);
+    color: var(--green-primary); white-space: nowrap;
+}
+.pa-oport-type.estagio    { color: var(--green-primary); }
+.pa-oport-type.curso      { background: rgba(46,155,92,0.1); border-color: var(--green-glow); color: var(--green-soft); }
+.pa-oport-type.evento     { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.25); color: #ffffff; }
+.pa-oport-type.selecao    { background: rgba(75,191,122,0.08); border-color: var(--green-glow); color: var(--green-mint); }
+
+.pa-oport-novo {
+    font-family: var(--bc-mono); font-size: 7px; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 2px 6px;
+    border-radius: var(--bc-r-full);
+    background: var(--green-glass); border: 1px solid var(--green-glow);
+    color: var(--green-primary); white-space: nowrap;
+    animation: blink 2s ease-in-out infinite;
+}
+@@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.pa-oport-title {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--bc-text-primary); line-height: 1.3;
+}
+
+.pa-oport-empresa { font-size: 0.82rem; color: var(--bc-text-body2); }
+.pa-oport-empresa i { color: var(--green-primary); margin-right: 4px; }
+
+.pa-oport-meta {
+    display: flex; gap: 12px; flex-wrap: wrap;
+}
+.pa-oport-meta span {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.1em; color: var(--bc-muted);
+    display: flex; align-items: center; gap: 4px;
+}
+.pa-oport-meta i { font-size: 9px; color: var(--green-primary); }
+
+.pa-oport-desc {
+    font-size: 0.82rem; color: var(--bc-text-body2); line-height: 1.5;
+    flex: 1;
+}
+
+.pa-oport-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 12px; border-top: 1px solid var(--bc-border);
+}
+.pa-oport-prazo {
+    font-family: var(--bc-mono); font-size: 8px;
+    letter-spacing: 0.1em; color: var(--bc-muted);
+}
+.pa-btn-candidatar {
+    font-family: var(--bc-mono); font-size: 8px; letter-spacing: 0.14em;
+    text-transform: uppercase; padding: 6px 12px; border-radius: var(--bc-r-md);
+    background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-forest) 100%);
+    color: var(--green-pale); font-weight: 700; border: none; cursor: pointer;
+    transition: all 0.2s;
+}
+.pa-btn-candidatar:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--green-glow); }
+
+/* ── DEPOIMENTOS ──────────────────────────────────── */
+.pa-depo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.pa-depo-card {
+    background: var(--bc-card);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-xl);
+    padding: 28px 24px;
+    backdrop-filter: blur(14px);
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+}
+.pa-depo-card:hover {
+    border-color: var(--bc-border-h);
+    transform: translateY(-3px);
+}
+.pa-depo-card::before {
+    content: '\201C';
+    position: absolute; top: 16px; right: 22px;
+    font-size: 64px; line-height: 1;
+    color: var(--green-glass);
+    font-family: Georgia, serif;
+}
+
+.pa-depo-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+
+.pa-depo-avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--green-primary) 0%, var(--green-forest) 100%);
+    border: 2px solid var(--bc-border-h);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--bc-mono); font-size: 18px; font-weight: 700;
+    color: var(--green-pale); flex-shrink: 0;
+    box-shadow: 0 0 14px var(--green-glow);
+}
+
+.pa-depo-info { flex: 1; }
+.pa-depo-name { font-size: 0.95rem; font-weight: 600; color: var(--bc-text-primary); margin-bottom: 2px; }
+.pa-depo-turma {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--bc-muted);
+}
+
+.pa-depo-atuacao {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: var(--bc-mono); font-size: 8px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--bc-r-full);
+    background: var(--green-glass); border: 1px solid var(--bc-tag-oport-b);
+    color: var(--green-primary); margin-top: 6px;
+    display: block; width: fit-content;
+}
+
+.pa-depo-text {
+    font-size: 0.88rem; color: var(--bc-text-body2);
+    line-height: 1.7; font-style: italic;
+}
+
+/* ── REGISTROS DO PROGRAMA ────────────────────────── */
+.pa-registros-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.pa-registro-card {
+    background: var(--bc-card);
+    border: 1px solid var(--bc-border);
+    border-radius: var(--bc-r-lg);
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+.pa-registro-card:hover {
+    border-color: var(--bc-border-h);
+    transform: translateY(-2px);
+}
+
+.pa-registro-thumb {
+    height: 150px;
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-forest) 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+}
+.pa-registro-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+.pa-registro-card:hover .pa-registro-thumb img { transform: scale(1.05); }
+.pa-registro-thumb-placeholder { font-size: 28px; color: var(--bc-border); }
+
+.pa-registro-type-badge {
+    position: absolute; top: 10px; left: 10px;
+}
+
+.pa-registro-body { padding: 14px 16px; }
+.pa-registro-title {
+    font-size: 0.88rem; font-weight: 600;
+    color: var(--bc-text-primary); margin-bottom: 4px; line-height: 1.3;
+}
+.pa-registro-date {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.1em; color: var(--bc-muted);
+    display: flex; align-items: center; gap: 4px;
+}
+
+/* ── FOOTER DA PÁGINA ─────────────────────────────── */
+.pa-footer {
+    position: relative; z-index: 1;
+    background: rgba(5,18,17,0.97);
+    border-top: 1px solid var(--bc-border);
+    padding: 24px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.pa-footer-brand {
+    font-family: var(--bc-mono); font-size: 10px;
+    letter-spacing: 0.14em; color: var(--bc-dim);
+}
+.pa-footer-back {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--bc-muted); transition: color 0.2s;
+}
+.pa-footer-back:hover { color: var(--green-primary); }
+
+/* ── STATUS DOT ───────────────────────────────────── */
+.pa-dot {
+    display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--green-primary);
+    box-shadow: 0 0 8px var(--green-glow);
+    animation: pa-pulse 2.5s ease-in-out infinite;
+    flex-shrink: 0;
+}
+@@keyframes pa-pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ── ANIMAÇÕES ────────────────────────────────────── */
+@@keyframes pa-fadeup {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+.pa-anim-1 { animation: pa-fadeup 0.5s cubic-bezier(.22,1,.36,1) both; }
+.pa-anim-2 { animation: pa-fadeup 0.5s 0.08s cubic-bezier(.22,1,.36,1) both; }
+.pa-anim-3 { animation: pa-fadeup 0.5s 0.16s cubic-bezier(.22,1,.36,1) both; }
+.pa-anim-4 { animation: pa-fadeup 0.5s 0.24s cubic-bezier(.22,1,.36,1) both; }
+
+/* ── UTIL ─────────────────────────────────────────── */
+.pa-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bc-border), transparent);
+    margin: 0;
+}
+.pa-show-all {
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 28px;
+}
+.pa-btn-all {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--bc-muted); padding: 8px 20px;
+    border: 1px solid var(--bc-border); border-radius: var(--bc-r-full);
+    background: var(--bc-card-alt); transition: all 0.2s; cursor: pointer;
+}
+.pa-btn-all:hover { border-color: var(--bc-border-h); color: var(--green-primary); }
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@@media (max-width: 1024px) {
+    .pa-indicators-grid  { grid-template-columns: repeat(3, 1fr); }
+    .pa-talentos-grid    { grid-template-columns: repeat(2, 1fr); }
+    .pa-blog-grid        { grid-template-columns: 1fr; }
+    .pa-galeria-grid     { grid-template-columns: repeat(2, 1fr); }
+    .pa-galeria-grid .span2 { grid-column: span 1; }
+    .pa-oport-grid       { grid-template-columns: repeat(2, 1fr); }
+    .pa-depo-grid        { grid-template-columns: repeat(2, 1fr); }
+    .pa-registros-grid   { grid-template-columns: repeat(2, 1fr); }
+    .pa-hero-content     { grid-template-columns: 1fr; }
+    .pa-hero-stats       { flex-direction: row; min-width: unset; }
+}
+
+@@media (max-width: 640px) {
+    .pa-container        { padding: 0 16px; }
+    .pa-header           { padding: 0 16px; }
+    .pa-header-nav       { display: none; }
+    .pa-indicators-grid  { grid-template-columns: repeat(2, 1fr); }
+    .pa-talentos-grid    { grid-template-columns: 1fr; }
+    .pa-oport-grid       { grid-template-columns: 1fr; }
+    .pa-depo-grid        { grid-template-columns: 1fr; }
+    .pa-registros-grid   { grid-template-columns: repeat(2, 1fr); }
+    .pa-galeria-grid     { grid-template-columns: repeat(2, 1fr); }
+    .pa-hero h1          { font-size: 2rem; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER (estilo igual ao código referência) ═══════════════ -->
+<header class="pa-header" id="header">
+    <div class="pa-header-brand">
+        <img src="/css/imagens/logo_conecta 2.png" alt="Barracred Conecta" style="height:50px; width:auto;" />
+    </div>
+
+    <nav class="pa-header-nav">
+        <a href="#indicadores" class="pa-nav-link">Indicadores</a>
+        <a href="#talentos"    class="pa-nav-link">Talentos</a>
+        <a href="#blog"        class="pa-nav-link">Blog</a>
+        <a href="#galeria"     class="pa-nav-link">Galeria</a>
+        <a href="#oportunidades" class="pa-nav-link">Oportunidades</a>
+        <a href="#depoimentos" class="pa-nav-link">Depoimentos</a>
+    </nav>
+
+    <div class="pa-header-actions">
+        <a asp-controller="Account" asp-action="Login" class="pa-btn-login">
+            <i class="fas fa-user"></i> ENTRAR
+        </a>
+    </div>
+</header>
+
+<!-- ═══ HERO ════════════════════════════════════════════════ -->
+<section class="pa-hero pa-anim-1">
+    <div class="pa-container">
+        <div class="pa-hero-content">
+            <div>
+                <p class="pa-hero-eyebrow">
+                    <span class="pa-dot"></span>
+                    Programa Social · Cooperativa Barracred
+                </p>
+                <h1>Área <span>Pública</span></h1>
+                <p>
+                    Conheça os talentos formados, acompanhe nossas publicações,
+                    explore oportunidades e acesse os registros do programa
+                    Barracred Conecta.
+                </p>
+            </div>
+            <div class="pa-hero-stats">
+                <div class="pa-hero-stat-item">
+                    <div class="pa-hero-stat-num">3</div>
+                    <div class="pa-hero-stat-label">Turmas</div>
+                </div>
+                <div class="pa-hero-stat-item">
+                    <div class="pa-hero-stat-num">57</div>
+                    <div class="pa-hero-stat-label">Formados</div>
+                </div>
+                <div class="pa-hero-stat-item">
+                    <div class="pa-hero-stat-num">78%</div>
+                    <div class="pa-hero-stat-label">Empregados</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="pa-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     1. PAINEL DE INDICADORES
+     ═══════════════════════════════════════════════════════════ -->
+<section id="indicadores" class="pa-section pa-section-alt">
+    <div class="pa-container">
+        <div class="pa-section-header pa-anim-1">
+            <p class="pa-section-eyebrow"><i class="fas fa-chart-line"></i> Painel Institucional</p>
+            <h2 class="pa-section-title">Indicadores do Programa</h2>
+            <p class="pa-section-desc">Dados estratégicos que refletem o impacto real do Barracred Conecta.</p>
+        </div>
+
+        <div class="pa-indicators-grid">
+            <div class="pa-indicator-card pa-anim-1">
+                <div class="pa-ind-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="pa-ind-value">57</div>
+                <div class="pa-ind-label">Alunos Formados</div>
+            </div>
+            <div class="pa-indicator-card pa-anim-2">
+                <div class="pa-ind-icon"><i class="fas fa-clock"></i></div>
+                <div class="pa-ind-value">2.400h</div>
+                <div class="pa-ind-label">Horas de Capacitação</div>
+            </div>
+            <div class="pa-indicator-card pa-anim-2">
+                <div class="pa-ind-icon"><i class="fas fa-briefcase"></i></div>
+                <div class="pa-ind-value">78%</div>
+                <div class="pa-ind-label">Índice de Empregabilidade</div>
+            </div>
+            <div class="pa-indicator-card pa-anim-3">
+                <div class="pa-ind-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="pa-ind-value">32%</div>
+                <div class="pa-ind-label">Continuidade ao Ensino Superior</div>
+            </div>
+            <div class="pa-indicator-card pa-anim-4">
+                <div class="pa-ind-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="pa-ind-value">91%</div>
+                <div class="pa-ind-label">Taxa de Conclusão</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="pa-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     2. BANCO DE TALENTOS
+     ═══════════════════════════════════════════════════════════ -->
+<section id="talentos" class="pa-section">
+    <div class="pa-container">
+        <div class="pa-section-header pa-anim-1">
+            <p class="pa-section-eyebrow"><i class="fas fa-star"></i> Banco de Talentos</p>
+            <h2 class="pa-section-title">Nossos Egressos</h2>
+            <p class="pa-section-desc">Jovens formados pelo programa prontos para o mercado. Conheça seus perfis e competências.</p>
+        </div>
+
+        <div class="pa-talentos-grid">
+            <!-- Talento 1 -->
+            <div class="pa-talento-card pa-anim-1">
+                <div class="pa-talento-avatar">LM</div>
+                <div class="pa-talento-name">Lucas Moreira</div>
+                <div class="pa-talento-role">Desenvolvedor Jr.</div>
+                <div class="pa-talento-turma">Turma 2023 · Módulo TI</div>
+                <div class="pa-talento-tags">
+                    <span class="pa-tag">Python</span>
+                    <span class="pa-tag">SQL</span>
+                    <span class="pa-tag-teal pa-tag">HTML/CSS</span>
+                </div>
+                <div class="pa-talento-links">
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" title="Portfólio"><i class="fas fa-globe"></i></a>
+                </div>
+            </div>
+            <!-- Talento 2 -->
+            <div class="pa-talento-card pa-anim-2">
+                <div class="pa-talento-avatar">AS</div>
+                <div class="pa-talento-name">Ana Silva</div>
+                <div class="pa-talento-role">Analista de Dados</div>
+                <div class="pa-talento-turma">Turma 2023 · Módulo TI</div>
+                <div class="pa-talento-tags">
+                    <span class="pa-tag">Excel</span>
+                    <span class="pa-tag">Power BI</span>
+                    <span class="pa-tag-teal pa-tag">Python</span>
+                </div>
+                <div class="pa-talento-links">
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <!-- Talento 3 -->
+            <div class="pa-talento-card pa-anim-3">
+                <div class="pa-talento-avatar">GC</div>
+                <div class="pa-talento-name">Gabriel Costa</div>
+                <div class="pa-talento-role">Suporte de TI</div>
+                <div class="pa-talento-turma">Turma 2024 · Módulo TI</div>
+                <div class="pa-talento-tags">
+                    <span class="pa-tag">Redes</span>
+                    <span class="pa-tag">Windows Server</span>
+                </div>
+                <div class="pa-talento-links">
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <!-- Talento 4 -->
+            <div class="pa-talento-card pa-anim-4">
+                <div class="pa-talento-avatar">MO</div>
+                <div class="pa-talento-name">Marina Oliveira</div>
+                <div class="pa-talento-role">Assistente Administrativa</div>
+                <div class="pa-talento-turma">Turma 2022 · Módulo Gestão</div>
+                <div class="pa-talento-tags">
+                    <span class="pa-tag-teal pa-tag">Comunicação</span>
+                    <span class="pa-tag-teal pa-tag">Cooperativismo</span>
+                </div>
+                <div class="pa-talento-links">
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pa-show-all">
+            <button class="pa-btn-all"><i class="fas fa-users"></i> Ver todos os talentos</button>
+        </div>
+    </div>
+</section>
+
+<div class="pa-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+      3. BLOG DIÁRIO / PUBLICAÇÕES
+      ═══════════════════════════════════════════════════════════ -->
+<section id="blog" class="pa-section pa-section-alt">
+    <div class="pa-container">
+        <div class="pa-section-header pa-anim-1">
+            <p class="pa-section-eyebrow"><i class="fas fa-pen-nib"></i> Blog do Programa</p>
+            <h2 class="pa-section-title">Publicações</h2>
+            <p class="pa-section-desc">Acompanhe o dia a dia do Conecta: aulas, visitas técnicas, eventos e muito mais.</p>
+        </div>
+
+        <!-- Filtros de categoria -->
+        <div class="pa-blog-filters">
+            <button class="pa-filter-btn active">Todos</button>
+            <button class="pa-filter-btn">Aulas</button>
+            <button class="pa-filter-btn">Conecta Talk</button>
+            <button class="pa-filter-btn">Visitas Técnicas</button>
+            <button class="pa-filter-btn">Eventos</button>
+            <button class="pa-filter-btn">Depoimentos</button>
+        </div>
+
+        <div class="pa-blog-grid">
+            <!-- Post em destaque -->
+            @if (Model != null && Model.Any())
+            {
+                var destaque = Model.First();
+                <div class="pa-blog-featured pa-anim-1">
+                    <div class="pa-blog-featured-img">
+                        @if (destaque.ImagemData != null)
+                        {
+                            <img src="data:@destaque.ImagemTipo;base64,@Convert.ToBase64String(destaque.ImagemData)" alt="@destaque.Titulo" style="width:100%;height:100%;object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <div class="pa-blog-featured-img-placeholder"><i class="fas fa-image"></i></div>
+                        }
+                        <div class="pa-blog-featured-cat">
+                            <span class="pa-cat-badge talk">Conecta Talk</span>
+                        </div>
+                    </div>
+                    <div class="pa-blog-featured-body">
+                        <div class="pa-blog-featured-meta">
+                            <span><i class="fas fa-calendar"></i> @destaque.DataCriacao.ToString("dd MMM yyyy")</span>
+                            <span><i class="fas fa-user"></i> @destaque.Usuario?.Nome</span>
+                        </div>
+                        <h3 class="pa-blog-featured-title">@destaque.Titulo</h3>
+                        <p class="pa-blog-featured-desc">@destaque.Descricao</p>
+                        <a href="#" class="pa-btn-read">Ler publicação <i class="fas fa-arrow-right" style="font-size:8px"></i></a>
+                    </div>
+                </div>
+
+                <!-- Lista lateral -->
+                <div class="pa-blog-side pa-anim-2">
+                    @foreach (var post in Model.Skip(1).Take(3))
+                    {
+                        <div class="pa-blog-list-item">
+                            <div class="pa-blog-list-thumb">
+                                @if (post.ImagemData != null)
+                                {
+                                    <img src="data:@post.ImagemTipo;base64,@Convert.ToBase64String(post.ImagemData)" alt="@post.Titulo" />
+                                }
+                                else
+                                {
+                                    <i class="fas fa-image"></i>
+                                }
+                            </div>
+                            <div class="pa-blog-list-body">
+                                <div class="pa-blog-list-cat"><span class="pa-cat-badge aulas">Aulas</span></div>
+                                <div class="pa-blog-list-title">@post.Titulo</div>
+                                <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> @post.DataCriacao.ToString("dd MMM yyyy")</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="pa-blog-featured pa-anim-1">
+                    <div class="pa-blog-featured-img">
+                        <div class="pa-blog-featured-img-placeholder"><i class="fas fa-image"></i></div>
+                        <div class="pa-blog-featured-cat">
+                            <span class="pa-cat-badge talk">Conecta Talk</span>
+                        </div>
+                    </div>
+                    <div class="pa-blog-featured-body">
+                        <div class="pa-blog-featured-meta">
+                            <span><i class="fas fa-calendar"></i> 24 Mar 2026</span>
+                            <span><i class="fas fa-user"></i> Coord. Andresa</span>
+                        </div>
+                        <h3 class="pa-blog-featured-title">Conecta Talk com profissional de TI: carreira, mercado e dicas para quem está começando</h3>
+                        <p class="pa-blog-featured-desc">
+                            A turma recebeu um profissional da área de desenvolvimento de software para uma tarde de troca intensa.
+                            Foram abordados temas como portfólio, primeiros empregos, soft skills e muito mais.
+                        </p>
+                        <a href="#" class="pa-btn-read">Ler publicação <i class="fas fa-arrow-right" style="font-size:8px"></i></a>
+                    </div>
+                </div>
+
+                <!-- Lista lateral -->
+                <div class="pa-blog-side pa-anim-2">
+                    <div class="pa-blog-list-item">
+                        <div class="pa-blog-list-thumb"><i class="fas fa-image"></i></div>
+                        <div class="pa-blog-list-body">
+                            <div class="pa-blog-list-cat"><span class="pa-cat-badge aulas">Aulas</span></div>
+                            <div class="pa-blog-list-title">Módulo 4 — Banco de dados relacional: primeira query dos alunos</div>
+                            <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> 20 Mar 2026</div>
+                        </div>
+                    </div>
+                    <div class="pa-blog-list-item">
+                        <div class="pa-blog-list-thumb"><i class="fas fa-image"></i></div>
+                        <div class="pa-blog-list-body">
+                            <div class="pa-blog-list-cat"><span class="pa-cat-badge visita">Visita Técnica</span></div>
+                            <div class="pa-blog-list-title">Visita à empresa parceira: como é a rotina de um analista de sistemas</div>
+                            <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> 14 Mar 2026</div>
+                        </div>
+                    </div>
+                    <div class="pa-blog-list-item">
+                        <div class="pa-blog-list-thumb"><i class="fas fa-image"></i></div>
+                        <div class="pa-blog-list-body">
+                            <div class="pa-blog-list-cat"><span class="pa-cat-badge evento">Evento</span></div>
+                            <div class="pa-blog-list-title">Semana da Cooperação — alunos participam de painel sobre ESG e cooperativismo</div>
+                            <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> 08 Mar 2026</div>
+                        </div>
+                    </div>
+                    <div class="pa-blog-list-item">
+                        <div class="pa-blog-list-thumb"><i class="fas fa-image"></i></div>
+                        <div class="pa-blog-list-body">
+                            <div class="pa-blog-list-cat"><span class="pa-cat-badge depoimento">Depoimento</span></div>
+                            <div class="pa-blog-list-title">"O programa mudou minha perspectiva" — depoimento da egressa Fernanda</div>
+                            <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> 02 Mar 2026</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="pa-show-all">
+            <button class="pa-btn-all"><i class="fas fa-newspaper"></i> Ver todas as publicações</button>
+        </div>
+    </div>
+</section>
+
+<div class="pa-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     4. REGISTROS DO PROGRAMA
+     ═══════════════════════════════════════════════════════════ -->
+<section id="registros" class="pa-section">
+    <div class="pa-container">
+        <div class="pa-section-header pa-anim-1">
+            <p class="pa-section-eyebrow"><i class="fas fa-archive"></i> Memória do Programa</p>
+            <h2 class="pa-section-title">Registros</h2>
+            <p class="pa-section-desc">Turmas, formaturas, visitas técnicas, Conecta Talks e eventos que marcaram nossa história.</p>
+        </div>
+
+        <div class="pa-registros-grid">
+            <div class="pa-registro-card pa-anim-1">
+                <div class="pa-registro-thumb">
+                    <div class="pa-registro-thumb-placeholder"><i class="fas fa-users"></i></div>
+                    <div class="pa-registro-type-badge"><span class="pa-cat-badge aulas">Turma</span></div>
+                </div>
+                <div class="pa-registro-body">
+                    <div class="pa-registro-title">Turma 01 — Formatura & Encerramento</div>
+                    <div class="pa-registro-date"><i class="fas fa-calendar"></i> Dezembro 2022</div>
+                </div>
+            </div>
+            <div class="pa-registro-card pa-anim-2">
+                <div class="pa-registro-thumb">
+                    <div class="pa-registro-thumb-placeholder"><i class="fas fa-microphone"></i></div>
+                    <div class="pa-registro-type-badge"><span class="pa-cat-badge talk">Conecta Talk</span></div>
+                </div>
+                <div class="pa-registro-body">
+                    <div class="pa-registro-title">Conecta Talk #01 — Carreira em TI</div>
+                    <div class="pa-registro-date"><i class="fas fa-calendar"></i> Agosto 2023</div>
+                </div>
+            </div>
+            <div class="pa-registro-card pa-anim-3">
+                <div class="pa-registro-thumb">
+                    <div class="pa-registro-thumb-placeholder"><i class="fas fa-bus"></i></div>
+                    <div class="pa-registro-type-badge"><span class="pa-cat-badge visita">Visita</span></div>
+                </div>
+                <div class="pa-registro-body">
+                    <div class="pa-registro-title">Visita Técnica — SEBRAE Regional</div>
+                    <div class="pa-registro-date"><i class="fas fa-calendar"></i> Outubro 2023</div>
+                </div>
+            </div>
+            <div class="pa-registro-card pa-anim-4">
+                <div class="pa-registro-thumb">
+                    <div class="pa-registro-thumb-placeholder"><i class="fas fa-star"></i></div>
+                    <div class="pa-registro-type-badge"><span class="pa-cat-badge evento">Evento</span></div>
+                </div>
+                <div class="pa-registro-body">
+                    <div class="pa-registro-title">Feira de Cooperativismo — Turma 02</div>
+                    <div class="pa-registro-date"><i class="fas fa-calendar"></i> Maio 2024</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pa-show-all">
+            <button class="pa-btn-all"><i class="fas fa-archive"></i> Ver todos os registros</button>
+        </div>
+    </div>
+</section>
+
+<div class="pa-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     5. GALERIA INSTITUCIONAL
+     ═══════════════════════════════════════════════════════════ -->
+<section id="galeria" class="pa-section pa-section-alt">
+    <div class="pa-container">
+        <div class="pa-section-header pa-anim-1">
+            <p class="pa-section-eyebrow"><i class="fas fa-images"></i> Galeria Institucional</p>
+            <h2 class="pa-section-title">Nossa Galeria</h2>
+            <p class="pa-section-desc">Momentos reais do programa em imagens.</p>
+        </div>
+
+        <div class="pa-galeria-grid">
+            <div class="pa-galeria-item span2 pa-anim-1">
+                <div class="pa-galeria-placeholder"><i class="fas fa-image"></i></div>
+                <div class="pa-galeria-overlay">
+                    <div class="pa-galeria-info">
+                        <div class="pa-galeria-title">Formatura Turma 02 — 2024</div>
+                        <div class="pa-galeria-date">Dezembro 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pa-galeria-item pa-anim-2">
+                <div class="pa-galeria-placeholder"><i class="fas fa-laptop-code"></i></div>
+                <div class="pa-galeria-overlay">
+                    <div class="pa-galeria-info">
+                        <div class="pa-galeria-title">Aula de Programação</div>
+                        <div class="pa-galeria-date">Março 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pa-galeria-item pa-anim-2">
+                <div class="pa-galeria-placeholder"><i class="fas fa-users"></i></div>
+                <div class="pa-galeria-overlay">
+                    <div class="pa-galeria-info">
+                        <div class="pa-galeria-title">Trabalho em Equipe</div>
+                        <div class="pa-galeria-date">Abril 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pa-galeria-item pa-anim-3">
+                <div class="pa-galeria-placeholder"><i class="fas fa-microphone-alt"></i></div>
+                <div class="pa-galeria-overlay">
+                    <div class="pa-galeria-info">
+                        <div class="pa-galeria-title">Conecta Talk</div>
+                        <div class="pa-galeria-date">Agosto 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pa-galeria-item pa-anim-3">
+                <div class="pa-galeria-placeholder"><i class="fas fa-handshake"></i></div>
+                <div class="pa-galeria-overlay">
+                    <div class="pa-galeria-info">
+                        <div class="pa-galeria-title">Visita Técnica SEBRAE</div>
+                        <div class="pa-galeria-date">Outubro 2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pa-galeria-item pa-anim-4">
+                <div class="pa-galeria-placeholder"><i class="fas fa-star"></i></div>
+                <div class="pa-galeria-overlay">
+                    <div class="pa-galeria-info">
+                        <div class="pa-galeria-title">Evento Cooperativo</div>
+                        <div class="pa-galeria-date">Maio 2024</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pa-show-all">
+            <button class="pa-btn-all"><i class="fas fa-images"></i> Ver galeria completa</button>
+        </div>
+    </div>
+</section>
+
+<div class="pa-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     6. ÁREA DE OPORTUNIDADES
+     ═══════════════════════════════════════════════════════════ -->
+<section id="oportunidades" class="pa-section">
+    <div class="pa-container">
+        <div class="pa-section-header pa-anim-1">
+            <p class="pa-section-eyebrow"><i class="fas fa-rocket"></i> Área de Oportunidades</p>
+            <h2 class="pa-section-title">Vagas &amp; Oportunidades</h2>
+            <p class="pa-section-desc">Centralizamos vagas de estágio, processos seletivos, cursos e eventos para nossos alunos e egressos.</p>
+        </div>
+
+        <div class="pa-oport-grid">
+            <!-- Oportunidade 1 -->
+            <div class="pa-oport-card pa-anim-1">
+                <div class="pa-oport-header">
+                    <span class="pa-oport-type estagio">Estágio</span>
+                    <span class="pa-oport-novo">Novo</span>
+                </div>
+                <div class="pa-oport-title">Estágio em Desenvolvimento Web</div>
+                <div class="pa-oport-empresa"><i class="fas fa-building"></i> TechSolutions Barra Bonita</div>
+                <div class="pa-oport-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> Barra Bonita, SP</span>
+                    <span><i class="fas fa-wallet"></i> R$ 800/mês + VT</span>
+                </div>
+                <p class="pa-oport-desc">
+                    Buscamos jovem com interesse em desenvolvimento web. Desejável conhecimento básico em HTML, CSS e lógica de programação.
+                </p>
+                <div class="pa-oport-footer">
+                    <span class="pa-oport-prazo"><i class="fas fa-clock"></i> Prazo: 10/04/2026</span>
+                    <button class="pa-btn-candidatar">Ver vaga</button>
+                </div>
+            </div>
+
+            <!-- Oportunidade 2 -->
+            <div class="pa-oport-card pa-anim-2">
+                <div class="pa-oport-header">
+                    <span class="pa-oport-type selecao">Processo Seletivo</span>
+                </div>
+                <div class="pa-oport-title">Processo Seletivo — Jovem Aprendiz Barracred</div>
+                <div class="pa-oport-empresa"><i class="fas fa-building"></i> Cooperativa Barracred</div>
+                <div class="pa-oport-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> Barra Bonita, SP</span>
+                    <span><i class="fas fa-users"></i> 5 vagas</span>
+                </div>
+                <p class="pa-oport-desc">
+                    Abertura de processo seletivo para jovens aprendizes nas áreas de atendimento, financeiro e TI. Prioridade para egressos do Conecta.
+                </p>
+                <div class="pa-oport-footer">
+                    <span class="pa-oport-prazo"><i class="fas fa-clock"></i> Prazo: 30/04/2026</span>
+                    <button class="pa-btn-candidatar">Ver vaga</button>
+                </div>
+            </div>
+
+            <!-- Oportunidade 3 -->
+            <div class="pa-oport-card pa-anim-3">
+                <div class="pa-oport-header">
+                    <span class="pa-oport-type curso">Curso</span>
+                </div>
+                <div class="pa-oport-title">Bootcamp Gratuito — Python para Dados</div>
+                <div class="pa-oport-empresa"><i class="fas fa-laptop"></i> Parceiro Digital — Online</div>
+                <div class="pa-oport-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> Online</span>
+                    <span><i class="fas fa-calendar-alt"></i> 40h</span>
+                </div>
+                <p class="pa-oport-desc">
+                    Bootcamp intensivo e gratuito para iniciantes em Python com foco em análise de dados. Vagas limitadas com certificação.
+                </p>
+                <div class="pa-oport-footer">
+                    <span class="pa-oport-prazo"><i class="fas fa-clock"></i> Prazo: 15/04/2026</span>
+                    <button class="pa-btn-candidatar">Inscrever-se</button>
+                </div>
+            </div>
+
+            <!-- Oportunidade 4 -->
+            <div class="pa-oport-card pa-anim-1">
+                <div class="pa-oport-header">
+                    <span class="pa-oport-type evento">Feira / Evento</span>
+                    <span class="pa-oport-novo">Novo</span>
+                </div>
+                <div class="pa-oport-title">Feira de Carreiras Tech — São Paulo</div>
+                <div class="pa-oport-empresa"><i class="fas fa-map-marker-alt"></i> Expo Center Norte, SP</div>
+                <div class="pa-oport-meta">
+                    <span><i class="fas fa-calendar-alt"></i> 18 Abr 2026</span>
+                    <span><i class="fas fa-ticket-alt"></i> Gratuito</span>
+                </div>
+                <p class="pa-oport-desc">
+                    Maior feira de tecnologia e carreiras da região. Networking com empresas, palestras e processos seletivos no local.
+                </p>
+                <div class="pa-oport-footer">
+                    <span class="pa-oport-prazo"><i class="fas fa-clock"></i> Inscrições abertas</span>
+                    <button class="pa-btn-candidatar">Participar</button>
+                </div>
+            </div>
+
+            <!-- Oportunidade 5 -->
+            <div class="pa-oport-card pa-anim-2">
+                <div class="pa-oport-header">
+                    <span class="pa-oport-type estagio">Estágio</span>
+                </div>
+                <div class="pa-oport-title">Estágio Administrativo — Financeiro</div>
+                <div class="pa-oport-empresa"><i class="fas fa-building"></i> Empresa Parceira Igaraçu</div>
+                <div class="pa-oport-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> Igaraçu do Tietê, SP</span>
+                    <span><i class="fas fa-wallet"></i> A combinar</span>
+                </div>
+                <p class="pa-oport-desc">
+                    Estágio na área administrativa com foco em financeiro básico, Excel e atendimento. Ideal para quem cursou o módulo de Educação Financeira.
+                </p>
+                <div class="pa-oport-footer">
+                    <span class="pa-oport-prazo"><i class="fas fa-clock"></i> Prazo: 20/04/2026</span>
+                    <button class="pa-btn-candidatar">Ver vaga</button>
+                </div>
+            </div>
+
+            <!-- Oportunidade 6 -->
+            <div class="pa-oport-card pa-anim-3">
+                <div class="pa-oport-header">
+                    <span class="pa-oport-type curso">Curso</span>
+                </div>
+                <div class="pa-oport-title">Excel Avançado com Certificação</div>
+                <div class="pa-oport-empresa"><i class="fas fa-laptop"></i> SENAC — Online</div>
+                <div class="pa-oport-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> Online</span>
+                    <span><i class="fas fa-calendar-alt"></i> 20h</span>
+                </div>
+                <p class="pa-oport-desc">
+                    Desconto exclusivo para alunos e egressos do programa. Certificação reconhecida no mercado de trabalho.
+                </p>
+                <div class="pa-oport-footer">
+                    <span class="pa-oport-prazo"><i class="fas fa-clock"></i> Turma em Maio</span>
+                    <button class="pa-btn-candidatar">Saiba mais</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pa-show-all">
+            <button class="pa-btn-all"><i class="fas fa-rocket"></i> Ver todas as oportunidades</button>
+        </div>
+    </div>
+</section>
+
+<div class="pa-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     7. DEPOIMENTOS EM DESTAQUE
+     ═══════════════════════════════════════════════════════════ -->
+<section id="depoimentos" class="pa-section pa-section-alt">
+    <div class="pa-container">
+        <div class="pa-section-header pa-anim-1">
+            <p class="pa-section-eyebrow"><i class="fas fa-heart"></i> Histórias Reais</p>
+            <h2 class="pa-section-title">Depoimentos em Destaque</h2>
+            <p class="pa-section-desc">Transformação que fala por si só — nas palavras de quem viveu.</p>
+        </div>
+
+        <div class="pa-depo-grid">
+            <!-- Depoimento 1 -->
+            <div class="pa-depo-card pa-anim-1">
+                <div class="pa-depo-top">
+                    <div class="pa-depo-avatar">FN</div>
+                    <div class="pa-depo-info">
+                        <div class="pa-depo-name">Fernanda Nunes</div>
+                        <div class="pa-depo-turma">Turma 01 · 2022</div>
+                        <div class="pa-depo-atuacao"><i class="fas fa-briefcase"></i> Analista de Suporte — TechSolutions</div>
+                    </div>
+                </div>
+                <p class="pa-depo-text">
+                    "Antes do Conecta eu não sabia o que queria pra minha vida. Hoje tenho carteira assinada, estou fazendo faculdade e sei exatamente onde quero chegar. O programa não me deu só conhecimento — me deu direção."
+                </p>
+            </div>
+
+            <!-- Depoimento 2 -->
+            <div class="pa-depo-card pa-anim-2">
+                <div class="pa-depo-top">
+                    <div class="pa-depo-avatar">RP</div>
+                    <div class="pa-depo-info">
+                        <div class="pa-depo-name">Rafael Pereira</div>
+                        <div class="pa-depo-turma">Turma 02 · 2024</div>
+                        <div class="pa-depo-atuacao"><i class="fas fa-code"></i> Desenvolvedor Web Jr.</div>
+                    </div>
+                </div>
+                <p class="pa-depo-text">
+                    "Sempre gostei de computador, mas nunca tive acesso. O programa me abriu as portas — aprendi a programar, a trabalhar em equipe e a apresentar minhas ideias com confiança. Hoje estou estagiando na área."
+                </p>
+            </div>
+
+            <!-- Depoimento 3 -->
+            <div class="pa-depo-card pa-anim-3">
+                <div class="pa-depo-top">
+                    <div class="pa-depo-avatar">CM</div>
+                    <div class="pa-depo-info">
+                        <div class="pa-depo-name">Camila Martins</div>
+                        <div class="pa-depo-turma">Turma 01 · 2022</div>
+                        <div class="pa-depo-atuacao"><i class="fas fa-graduation-cap"></i> Cursando Análise de Sistemas</div>
+                    </div>
+                </div>
+                <p class="pa-depo-text">
+                    "O que mais me marcou foram as pessoas: professores que realmente se importavam, colegas que viraram amigos e uma coordenação sempre presente. O Conecta é muito mais do que um curso — é uma família."
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+<footer class="pa-footer">
+    <div class="pa-footer-brand">
+        <span class="pa-dot"></span>&nbsp;
+        BARRACRED CONECTA · ÁREA PÚBLICA · v2025.1
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="pa-footer-back">
+        <i class="fas fa-arrow-left"></i> Voltar ao site
+    </a>
+</footer>
+
+<script>
+    // ── Toggle de tema ────────────────────────────────────────
+    function toggleTheme() {
+        const html = document.documentElement;
+        const icon = document.getElementById('theme-icon');
+        const isDark = html.getAttribute('data-theme') !== 'light';
+        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        icon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+    }
+
+    // ── Filtros do blog ───────────────────────────────────────
+    document.querySelectorAll('.pa-filter-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.pa-filter-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // ── Scroll suave para âncoras ─────────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const target = document.querySelector(a.getAttribute('href'));
+            if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        });
+    });
+
+    // ── Efeito de scroll no header ─────────────────────────────
+window.addEventListener('scroll', () => {
+    const header = document.getElementById('header');
+    if (header) {
+        header.classList.toggle('scrolled', window.scrollY > 50);
+    }
+});
+</script>
+</body>
+</html>

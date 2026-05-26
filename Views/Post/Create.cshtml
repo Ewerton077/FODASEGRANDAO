@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "Novo Post";
+    Layout = null;
+}
+@model backendconfigconecta.Controllers.PostViewModel
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduSys — Novo Post</title>
+    <link rel="stylesheet" href="~/css/geral.css" />
+    <style>
+        :root {
+            --brand-lime: #1EB53A;
+            --brand-lime-dark: #008744;
+            --brand-teal: #08785B;
+            --font-sans: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', monospace;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --border: rgba(30, 181, 58, 0.15);
+            --text-100: #1a2e1a;
+            --text-400: #4a7a4a;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+        }
+        body { background: linear-gradient(165deg, #051211 0%, #0B2B28 100%); font-family: var(--font-sans); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .form-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; width: 100%; max-width: 500px; backdrop-filter: blur(14px); }
+        .form-title { font-size: 22px; font-weight: 700; color: var(--text-100); margin-bottom: 24px; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-400); margin-bottom: 8px; }
+        .form-input, .form-textarea { width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 14px; outline: none; transition: border-color 0.2s; }
+        .form-input:focus, .form-textarea:focus { border-color: var(--brand-lime); }
+        .form-textarea { min-height: 120px; resize: vertical; }
+        .form-file { width: 100%; padding: 10px; border: 1px dashed var(--border); border-radius: var(--radius-md); background: rgba(30,181,58,0.02); }
+        .file-help { font-size: 11px; color: var(--text-400); margin-top: 4px; }
+        .btn-submit { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-teal) 100%); color: #fff; font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; border: none; border-radius: var(--radius-md); cursor: pointer; margin-top: 10px; }
+        .btn-cancel { width: 100%; padding: 12px; background: transparent; color: var(--text-400); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; margin-top: 8px; }
+        .text-danger { color: #f87171; font-size: 12px; margin-top: 4px; display: block; }
+        .back-link { display: block; text-align: center; margin-top: 16px; color: var(--brand-lime); text-decoration: none; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h1 class="form-title">Novo Post</h1>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="Titulo" class="form-label">Título</label>
+                <input asp-for="Titulo" class="form-input" placeholder="Digite o título do post" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Descricao" class="form-label">Descrição</label>
+                <textarea asp-for="Descricao" class="form-textarea" placeholder="Digite a descrição do post..."></textarea>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Imagem" class="form-label">Imagem (máx. 5MB)</label>
+                <input asp-for="Imagem" class="form-file" type="file" accept=".jpg,.jpeg,.png,.gif" />
+                <span class="file-help">Formatos aceitos: JPG, PNG, GIF (máximo 5MB)</span>
+                <span asp-validation-for="Imagem" class="text-danger"></span>
+            </div>
+            
+            <button type="submit" class="btn-submit">Publicar</button>
+        </form>
+        <a href="@Url.Action("Index", "Home")" class="back-link">Cancelar</a>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

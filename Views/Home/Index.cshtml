@@ -1,0 +1,1178 @@
+@{
+    ViewData["Title"] = "Home";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barracred Conecta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ── VARIÁVEIS DE CORES (tema claro) ── */
+        :root {
+            --brand-lime:        #1EB53A;
+            --brand-lime-dark:   #008744;
+            --brand-lime-light:  #31f301;
+            --brand-green:       #1EB53A;
+            --brand-green-mid:   #008744;
+            --brand-green-dark:  #004438;
+            --brand-teal:        #08785B;
+            --brand-cyan:        #07A5BF;
+            --brand-blue:        #316BA5;
+            --brand-orange:      #FF6600;
+            --brand-yellow:      #FFC000;
+
+            --bg:                #FFFFFF;
+            --bg-section:        #F4F9F8;
+            --bg-section-alt:    #EAEFED;
+            --bg-card:           #FFFFFF;
+            --bg-hero-overlay:   rgba(0, 68, 56, 0.78);
+
+            --text-100:          #1a2e28;
+            --text-200:          #213d35;
+            --text-400:          #3a5a50;
+            --text-600:          #5c7a71;
+            --text-800:          #8aada4;
+
+            --border:            rgba(8, 120, 91, 0.18);
+            --border-hover:      rgba(161, 188, 33, 0.6);
+            --border-card:       rgba(8, 120, 91, 0.22);
+
+            --shadow-sm:         0 2px 8px rgba(0,68,56,0.08);
+            --shadow-md:         0 4px 20px rgba(0,68,56,0.12);
+
+            --radius-sm:         4px;
+            --radius-md:         8px;
+            --radius-lg:         12px;
+            --radius-xl:         16px;
+            --radius-full:       9999px;
+
+            --font-sans:         'Segoe UI', system-ui, sans-serif;
+            --font-mono:         'SF Mono', 'Fira Code', monospace;
+        }
+
+        /* ── RESET / BASE ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text-200);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(1.3px);
+            -webkit-backdrop-filter: blur(1.3px);
+            border-bottom: 1px solid transparent;
+            transition: box-shadow 0.3s, background 0.3s;
+        }
+        .header.scrolled {
+            background: rgba(0, 0, 0, 0.445);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.199);
+            border-bottom: 1px solid rgba(161,188,33,0.3);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .navbar-brand-text {
+            font-family: var(--font-mono);
+            font-size: 16px;
+            letter-spacing: 0.1em;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .navbar-brand-text span { color: var(--brand-lime); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(255,255,255,0.75);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .nav-links a:hover { color: var(--brand-lime); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0;
+            width: 0; height: 2px;
+            background: var(--brand-lime);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .btn-aluno {
+            background: rgba(161,188,33,0.18) !important;
+            color: var(--brand-lime) !important;
+            border: 1px solid rgba(161,188,33,0.5);
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-aluno:hover {
+            background: rgba(161,188,33,0.32) !important;
+            color: #ffffff !important;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: rgba(255,255,255,0.6);
+            padding: 0.5rem;
+            transition: color 0.2s;
+        }
+        .theme-toggle:hover { color: var(--brand-lime); }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: rgba(255,255,255,0.75);
+            background: none;
+            border: none;
+        }
+
+        /* ── HERO (80vh) ── */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.78) 100%);
+            z-index: 1;
+        }
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(161,188,33,0.15);
+            color: var(--brand-lime);
+            border: 1px solid rgba(161,188,33,0.4);
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.8s ease-out;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--brand-lime);
+            animation: fadeUp 0.8s ease-out 0.2s backwards;
+        }
+        .hero h1 span { color: #ffffff; }
+        .hero h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.8s ease-out 0.4s backwards;
+        }
+        .hero p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1rem;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeUp 0.8s ease-out 0.6s backwards;
+        }
+        .hero .destaque {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--brand-lime);
+            margin: 1rem 0;
+            animation: fadeUp 0.8s ease-out 0.8s backwards;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            animation: fadeUp 0.8s ease-out 1s backwards;
+        }
+        .hero .btn-primary-hero {
+            background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
+            color: #2a3d00;
+            padding: 10px 24px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 18px rgba(161,188,33,0.35);
+            transition: all 0.22s;
+        }
+        .hero .btn-primary-hero:hover {
+            background: linear-gradient(135deg, var(--brand-lime-light) 0%, var(--brand-lime) 100%);
+            box-shadow: 0 6px 24px rgba(161,188,33,0.5);
+            transform: translateY(-2px);
+        }
+        .hero .btn-secondary-hero {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.55);
+            padding: 10px 24px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.22s;
+        }
+        .hero .btn-secondary-hero:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.85);
+        }
+
+        /* ── WAVES ARREDONDADAS ── */
+        .hero-waves {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .hero-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: repeat-x;
+            background-position: bottom;
+            background-size: 1400px 100%;
+        }
+        .wave-1 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 160' preserveAspectRatio='none'%3E%3Cpath fill='%23FFFFFF' fill-opacity='1' d='M0,96 C200,160 400,160 600,128 C800,96 1000,64 1200,80 C1300,88 1350,96 1400,96 L1400,160 L0,160 Z'%3E%3C/path%3E%3C/svg%3E");
+            animation: waveMove 25s linear infinite;
+            opacity: 0.95;
+        }
+        .wave-2 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 160' preserveAspectRatio='none'%3E%3Cpath fill='%23FFFFFF' fill-opacity='0.85' d='M0,112 C200,144 400,128 600,112 C800,96 1000,80 1200,96 C1300,104 1350,112 1400,112 L1400,160 L0,160 Z'%3E%3C/path%3E%3C/svg%3E");
+            animation: waveMove 20s linear infinite reverse;
+            opacity: 0.7;
+        }
+        .wave-3 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 160' preserveAspectRatio='none'%3E%3Cpath fill='%23FFFFFF' fill-opacity='0.7' d='M0,128 C250,152 500,136 750,120 C1000,104 1150,88 1300,104 C1350,112 1380,120 1400,128 L1400,160 L0,160 Z'%3E%3C/path%3E%3C/svg%3E");
+            animation: waveMove 15s linear infinite;
+            opacity: 0.5;
+        }
+        .wave-4 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 160' preserveAspectRatio='none'%3E%3Cpath fill='%23FFFFFF' fill-opacity='0.4' d='M0,144 C300,160 600,152 900,136 C1100,120 1250,112 1400,120 L1400,160 L0,160 Z'%3E%3C/path%3E%3C/svg%3E");
+            animation: waveMove 10s linear infinite reverse;
+            opacity: 0.3;
+        }
+
+        @@keyframes waveMove {
+            0% { background-position-x: 0px; }
+            100% { background-position-x: 1400px; }
+        }
+
+        .decorative-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(161,188,33,0.4), transparent);
+            pointer-events: none;
+            z-index: 3;
+        }
+        .decorative-line.top    { top: 120px; left: 10%; width: 80%; }
+        .decorative-line.bottom { bottom: 100px; left: 10%; width: 60%; }
+
+        /* ── Waves ── */
+        .sobre {
+            background: var(--bg-section);
+            border-top: none;
+            border-bottom: 0.5px solid var(--border);
+            position: relative;
+            z-index: 15;
+            margin-top: -40px;
+            border-radius: 48px 42px 45 50;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+        }
+
+        /* ── QUICKSTATS ── */
+        .bc-quickstats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .bc-quickstats-item {
+            background: var(--bg-section);
+            padding: 20px 24px;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .bc-quickstats-item:hover { background: #dff0ea; }
+        .bc-quickstats-num {
+            font-family: var(--font-mono);
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--brand-green-mid);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .bc-quickstats-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-600);
+        }
+
+        /* ── SEÇÕES GENÉRICAS ── */
+        .section { padding: 5rem 2rem; position: relative; z-index: 1; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.75rem;
+            color: var(--brand-green-mid);
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 36px; height: 2px;
+            background: linear-gradient(90deg, var(--brand-lime), transparent);
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+        .section-subtitle {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-600);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        /* ── SOBRE ── */
+        .sobre-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+        .sobre-text p { color: var(--text-600); font-size: 0.92rem; margin-bottom: 1rem; }
+        .sobre-text .destaque { color: var(--brand-green-mid); font-weight: 600; font-size: 0.95rem; }
+        .sobre-beneficios h3 { color: var(--text-200); font-size: 1.1rem; margin-bottom: 1rem; }
+        .beneficios-list { list-style: none; }
+        .beneficios-list li {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.6rem 0;
+            color: var(--text-200); font-size: 0.92rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .beneficios-list li:last-child { border-bottom: none; }
+        .beneficios-list li i { color: var(--brand-green-mid); }
+
+        /* ── CONTEÚDO ── */
+        .conteudo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .conteudo-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .conteudo-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .conteudo-card i { color: var(--brand-green-mid); font-size: 2rem; margin-bottom: 1rem; display: block; }
+        .conteudo-card h3 { color: var(--text-200); font-size: 1rem; margin-bottom: 0.75rem; }
+        .conteudo-card p { color: var(--text-600); font-size: 0.85rem; }
+        .conteudo-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(161,188,33,0.06), transparent);
+            transition: left 0.5s;
+        }
+        .conteudo-card:hover::before { left: 100%; }
+
+        /* ── POR QUÊ ── */
+        .sectionporque {
+            padding: 6rem 0;
+            background: var(--bg-section);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .sectionporque .container { position: relative; z-index: 1; }
+
+        .missao-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .missao-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .missao-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .missao-card i { color: var(--brand-lime); font-size: 1.8rem; margin-bottom: 1rem; display: block; }
+        .missao-card h4 { color: var(--text-200); font-size: 1rem; margin-bottom: 0.5rem; }
+        .missao-card p { color: var(--text-600); font-size: 0.85rem; }
+        .missao-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(161,188,33,0.06), transparent);
+            transition: left 0.5s;
+        }
+        .missao-card:hover::before { left: 100%; }
+
+        /* ── PARTICIPAR ── */
+        .participar-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        .participar-info p { color: var(--text-600); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .participar-destaques { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+        .destaque-item { display: flex; align-items: center; gap: 1rem; }
+        .destaque-item i { color: var(--brand-green-mid); font-size: 1.25rem; }
+        .destaque-item span { color: var(--text-200); font-size: 0.92rem; }
+        .vagas-info { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+        .vaga-item { display: flex; align-items: center; gap: 1rem; }
+        .vaga-porcentagem {
+            background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
+            color: #2a3d00;
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-full);
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .vaga-item span { color: var(--text-200); font-size: 0.9rem; }
+        .requisitos-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .requisitos-box h3 { color: var(--text-200); font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .requisitos-box ul { list-style: none; }
+        .requisitos-box li {
+            display: flex; align-items: flex-start; gap: 0.75rem;
+            padding: 0.6rem 0;
+            color: var(--text-600); font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .requisitos-box li:last-child { border-bottom: none; }
+        .requisitos-box li i { color: var(--brand-green-mid); margin-top: 2px; }
+
+        /* ── CTA ── */
+        .cta-section {
+            background-image: url(/css/imagens/bannerfundo.png);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-top: 1px solid rgba(161,188,33,0.25);
+            border-bottom: 1px solid rgba(161,188,33,0.25);
+            text-align: center;
+            padding: 5rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-content h2 { color: var(--brand-lime); font-size: 2rem; margin-bottom: 1rem; }
+        .cta-content p { color: rgba(255,255,255,0.75); font-size: 1rem; margin-bottom: 2rem; }
+        .btn-cta {
+            background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
+            color: #2a3d00;
+            padding: 12px 28px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 18px rgba(161,188,33,0.35);
+            transition: all 0.22s;
+        }
+        .btn-cta:hover {
+            background: linear-gradient(135deg, var(--brand-lime-light) 0%, var(--brand-lime) 100%);
+            box-shadow: 0 6px 24px rgba(161,188,33,0.5);
+            transform: translateY(-2px);
+        }
+
+        /* ── EQUIPE ── */
+        .equipe-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1.5rem;
+        }
+        .equipe-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 2.25rem 1.75rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .equipe-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .equipe-foto img {
+            width: 80px; height: 80px;
+            border-radius: 50%; object-fit: cover;
+            margin: 0 auto 0.75rem;
+            border: 2px solid rgba(161,188,33,0.5);
+            box-shadow: 0 0 12px rgba(161,188,33,0.15);
+        }
+        .equipe-card h4 { color: var(--text-200); font-size: 0.9rem; margin-bottom: 0.25rem; }
+        .equipe-card .cargo { color: var(--brand-green-mid); font-size: 0.75rem; }
+        .equipe-social { display: flex; justify-content: center; gap: 0.75rem; margin-top: 0.75rem; }
+        .equipe-social a { color: var(--text-800); font-size: 1rem; transition: color 0.2s; }
+        .equipe-social a:hover { color: var(--brand-green-mid); }
+        .equipe-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(161,188,33,0.06), transparent);
+            transition: left 0.5s;
+        }
+        .equipe-card:hover::before { left: 100%; }
+
+        /* ── PARCEIROS ── */
+        .parceiros {
+            background: var(--bg-section);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .parceiros-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .parceiro-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .parceiro-item:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .parceiro-item i { color: var(--brand-green-mid); font-size: 2rem; margin-bottom: 1rem; display: block; }
+        .parceiro-item h4 { color: var(--text-200); font-size: 1rem; margin-bottom: 0.5rem; }
+        .parceiro-item p { color: var(--text-600); font-size: 0.85rem; }
+        .parceiro-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(161,188,33,0.06), transparent);
+            transition: left 0.5s;
+        }
+        .parceiro-item:hover::before { left: 100%; }
+
+        /* ── ÁREA DO ALUNO ── */
+        .area-aluno { padding: 5rem 2rem; position: relative; z-index: 1; }
+        .aluno-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-md);
+        }
+        .aluno-box > i { color: var(--brand-green-mid); font-size: 3rem; margin-bottom: 1rem; display: block; }
+        .aluno-box h2 { color: var(--brand-green-mid); font-size: 1.6rem; margin-bottom: 0.75rem; }
+        .aluno-box > p { color: var(--text-600); font-size: 0.9rem; margin-bottom: 2rem; }
+        .aluno-recursos {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .recurso-card {
+            background: var(--bg-section);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            text-decoration: none;
+            color: var(--text-200);
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0.75rem;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .recurso-card:hover {
+            background: #dff0ea;
+            border-color: rgba(161,188,33,0.5);
+        }
+        .recurso-card i { color: var(--brand-green-mid); font-size: 1.6rem; }
+        .recurso-card span { font-size: 0.85rem; }
+        .aluno-login {
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .aluno-login p { color: var(--text-600); font-size: 0.85rem; margin-bottom: 1rem; }
+        .btn-aluno-login {
+            display: inline-flex;
+            align-items: center; gap: 6px;
+            background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
+            color: #2a3d00;
+            padding: 10px 24px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.22s;
+            box-shadow: 0 4px 16px rgba(161,188,33,0.25);
+        }
+        .btn-aluno-login:hover {
+            background: linear-gradient(135deg, var(--brand-lime-light) 0%, var(--brand-lime) 100%);
+            transform: translateY(-1px);
+        }
+
+        /* ── TURMA (banner / gallery) ── */
+        .turma-banner {
+            position: relative;
+            min-height: 400px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .turma-banner-bg { position: absolute; inset: 0; }
+        .turma-banner-bg img { width: 100%; height: 100%; object-fit: cover; }
+        .turma-banner-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(0,68,56,0.88) 0%, rgba(8,120,91,0.85) 100%);
+        }
+        .turma-banner-content {
+            position: relative; z-index: 1;
+            text-align: center; color: white; padding: 2rem;
+        }
+        .turma-banner-content h2 { font-size: 2rem; margin-bottom: 1rem; color: #ffffff; }
+        .turma-banner-content p { font-size: 1rem; color: rgba(255,255,255,0.82); margin-bottom: 2rem; }
+        .turma-banner-stats { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; }
+        .banner-stat { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        .banner-stat i { font-size: 1.75rem; color: var(--brand-lime); }
+        .banner-stat span { color: rgba(255,255,255,0.85); font-size: 0.9rem; }
+
+        .turma-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        .turma-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .turma-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+        .turma-image img { width: 100%; height: 200px; object-fit: cover; }
+        .turma-info { padding: 1.25rem; text-align: center; }
+        .turma-info i { color: var(--brand-green-mid); font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+        .turma-info h4 { color: var(--text-200); font-size: 0.95rem; margin-bottom: 0.25rem; }
+        .turma-info p { color: var(--text-600); font-size: 0.83rem; }
+        .turma-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(161,188,33,0.06), transparent);
+            transition: left 0.5s;
+        }
+        .turma-card:hover::before { left: 100%; }
+        .turma-stats {
+            display: flex; justify-content: center;
+            gap: 4rem; margin-top: 3rem; flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-number {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 3rem; font-weight: 700;
+            color: var(--brand-green-mid);
+        }
+        .stat-label { color: var(--text-600); font-size: 0.9rem; }
+
+        /* ── FOOTER ── */
+        .footer {
+            background: var(--brand-green-dark);
+            border-top: 1px solid rgba(161,188,33,0.2);
+            padding: 4rem 2rem 2rem;
+            position: relative; z-index: 1;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-logo .navbar-brand-text { color: #ffffff; }
+        .footer-logo img { height: 50px; margin-bottom: 0.5rem; }
+        .footer-logo p { color: rgba(255,255,255,0.55); font-size: 0.9rem; margin-top: 0.75rem; }
+        .footer-info h4, .footer-links h4 {
+            color: var(--brand-lime);
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+            font-family: var(--font-mono);
+            letter-spacing: 0.08em;
+        }
+        .footer-info ul, .footer-links ul { list-style: none; }
+        .footer-info li, .footer-links li { margin-bottom: 0.6rem; }
+        .footer-info a, .footer-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-info a:hover, .footer-links a:hover { color: var(--brand-lime); }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem; margin-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.35);
+            font-size: 0.8rem;
+            max-width: 1200px; margin-left: auto; margin-right: auto;
+        }
+
+        /* ── WHATSAPP ── */
+        .whatsapp-float {
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: #25d366;
+            color: white;
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 1000;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(37,211,102,0.55);
+        }
+
+        /* ── ANIMAÇÃO ── */
+        @@keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── RESPONSIVO ── */
+        @@media (max-width: 1024px) {
+            .missao-grid, .equipe-grid { grid-template-columns: repeat(3, 1fr); }
+            .conteudo-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @@media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links {
+                position: fixed; top: 72px; left: 0; right: 0;
+                background: var(--brand-green-dark);
+                flex-direction: column; padding: 1.5rem;
+                gap: 1rem;
+                transform: translateY(-150%);
+                transition: transform 0.3s;
+                border-bottom: 1px solid rgba(161,188,33,0.2);
+            }
+            .nav-links.active { transform: translateY(0); }
+            .hero h1 { font-size: 2rem; }
+            .hero-btns { flex-direction: column; align-items: center; }
+            .sobre-content, .participar-content { grid-template-columns: 1fr; }
+            .missao-grid, .conteudo-grid, .turma-gallery,
+            .parceiros-content, .equipe-grid { grid-template-columns: 1fr; }
+            .bc-quickstats { grid-template-columns: repeat(2, 1fr); }
+            .aluno-recursos { grid-template-columns: repeat(2, 1fr); }
+            .footer-content { grid-template-columns: 1fr; }
+            .turma-stats { gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── HEADER ──────────────────────────────────────────────── -->
+<header class="header" id="header">
+    <nav class="navbar">
+        <a href="#home" class="navbar-brand" style="text-decoration:none;">
+            <img src="/css/imagens/logo_conecta 2.png" alt="Barracred Conecta" style="height:40px; width:auto;">
+        </a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#sobre">Quem Somos</a></li>
+            <li><a href="#conteudo">Conteúdo</a></li>
+            <li><a href="#turma">Turma</a></li>
+            <li><a href="#participar">Como Participar</a></li>
+            <li><a href="#equipe">Equipe</a></li>
+            <li><a asp-controller="AreaAluno" asp-action="Areaaluno_index" class="btn-aluno">Área do Aluno</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ── HERO (80vh) ──────────────────────────────────────────── -->
+<section id="home" class="hero" style="background-image: url('@Url.Content("~/css/imagens/porque_bg.png")');">
+    <div class="hero-overlay"></div>
+    <div class="hero-waves">
+        <div class="hero-wave wave-1"></div>
+        <div class="hero-wave wave-2"></div>
+        <div class="hero-wave wave-3"></div>
+        <div class="hero-wave wave-4"></div>
+    </div>
+    <div class="decorative-line top"></div>
+    <div class="decorative-line bottom"></div>
+    <div class="hero-content">
+        <h1>Barracred <span>Conecta</span></h1>
+        <h2>Criando Oportunidades e Cooperando para o Futuro</h2>
+        <p>Um programa pensado para inspirar, capacitar e criar conexões com o futuro<br>por meio da educação, do conhecimento e do desenvolvimento humano.</p>
+        <p class="destaque">Porque quando a gente coopera, a transformação acontece!</p>
+        <div class="hero-btns">
+            <a href="/inscricao" class="btn-primary-hero">
+                <i class="fas fa-clipboard-list"></i> Quero Me Inscrever
+            </a>
+            <a href="#sobre" class="btn-secondary-hero">Saiba Mais</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── SOBRE (SOBREPOSTA COM FUNDO BRANCO) ─────────────────── -->
+<section id="sobre" class="section sobre">
+    <div class="container">
+        <h2 class="section-title">O que é o Barracred Conecta?</h2>
+        <div class="sobre-content">
+            <div class="sobre-text">
+                <p>Uma porta de entrada para um novo mundo. Formamos jovens confiantes, preparados e conscientes, com aulas de TI, Inglês Técnico, Educação Financeira e Desenvolvimento de Habilidades Pessoais e Profissionais.</p>
+                <p>Além da formação técnica, oferecemos acompanhamento psicológico e apoio integral ao longo de toda a jornada.</p>
+                <p class="destaque">Totalmente gratuito, graças ao investimento da Cooperativa Barracred!</p>
+            </div>
+            <div class="sobre-beneficios">
+                <h3>O que a Barracred garante:</h3>
+                <ul class="beneficios-list">
+                    <li><i class="fas fa-check"></i> Material didático</li>
+                    <li><i class="fas fa-check"></i> Uniforme</li>
+                    <li><i class="fas fa-check"></i> Vale-transporte</li>
+                    <li><i class="fas fa-check"></i> Alimentação</li>
+                    <li><i class="fas fa-check"></i> Equipamentos individuais</li>
+                    <li><i class="fas fa-check"></i> Laboratório técnico equipado</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CONTEÚDO ─────────────────────────────────────────────── -->
+<section id="conteudo" class="section" style="background-color: #DBDBDB;">
+    <div class="container">
+        <h2 class="section-title">O que você vai aprender?</h2>
+        <div class="conteudo-grid">
+            <div class="conteudo-card"><i class="fas fa-brain"></i><h3>Habilidades Pessoais e Profissionais</h3><p>Autoconhecimento, empatia e competências para o mercado.</p></div>
+            <div class="conteudo-card"><i class="fas fa-laptop-code"></i><h3>Tecnologia da Informação</h3><p>De sistemas operacionais a programação, banco de dados e mobile.</p></div>
+            <div class="conteudo-card"><i class="fas fa-language"></i><h3>Inglês Técnico</h3><p>Vocabulário e expressões do mundo corporativo.</p></div>
+            <div class="conteudo-card"><i class="fas fa-people-carry"></i><h3>Cooperativismo na Prática</h3><p>Princípios e vivência do modelo colaborativo.</p></div>
+            <div class="conteudo-card"><i class="fas fa-microphone-alt"></i><h3>Palestras Imersivas</h3><p>Profissionais reais compartilhando experiências do mercado.</p></div>
+            <div class="conteudo-card"><i class="fas fa-graduation-cap"></i><h3>Estágios e Oportunidades</h3><p>Vagas reais via parcerias com empresas.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ── TURMA ────────────────────────────────────────────────── -->
+<section id="turma" class="section">
+    <div class="container">
+        <h2 class="section-title">Nossa Turma</h2>
+        <p class="section-subtitle">Cada jovem aqui carrega um sonho e está construindo seu próprio caminho.</p>
+        <div class="turma-gallery">
+            <div class="turma-card">
+                <div class="turma-image"><img src="~/css/imagens/aulapratica.jpg" alt="Aulas Práticas" /></div>
+                <div class="turma-info"><i class="fas fa-laptop-code"></i><h4>Aulas Práticas</h4><p>Tecnologia no laboratório equipado</p></div>
+            </div>
+            <div class="turma-card">
+                <div class="turma-image"><img src="~/css/imagens/apresentacoes.jpg" alt="Apresentações" /></div>
+                <div class="turma-info"><i class="fas fa-microphone-alt"></i><h4>Apresentações</h4><p>Comunicação e protagonismo</p></div>
+            </div>
+            <div class="turma-card">
+                <div class="turma-image"><img src="~/css/imagens/trabalhoemequipe.jpg" alt="Trabalho em Equipe" /></div>
+                <div class="turma-info"><i class="fas fa-users"></i><h4>Trabalho em Equipe</h4><p>Colaborando e aprendendo juntos</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── POR QUÊ ──────────────────────────────────────────────── -->
+<section class="section sectionporque" style="background-color: #F4F9F8; border-top: 1px solid rgba(74, 139, 130, 0.18); border-bottom: 1px solid rgba(74, 139, 130, 0.18);">
+    <div class="container">
+        <h2 class="section-title ">Por que fazemos o que fazemos?</h2>
+        <p class="section-subtitle">Quando um jovem é fortalecido, ele transforma não só a própria vida, mas também o mundo ao seu redor.</p>
+        <div class="missao-grid">
+            <div class="missao-card"><i class="fas fa-bullseye"></i><h4>Criar Oportunidades</h4><p>Para que os jovens ampliem sua visão de futuro.</p></div>
+            <div class="missao-card"><i class="fas fa-tools"></i><h4>Oferecer Ferramentas</h4><p>Para construir caminhos com confiança.</p></div>
+            <div class="missao-card"><i class="fas fa-users"></i><h4>Formar Talentos</h4><p>Comprometidos com o bem coletivo.</p></div>
+            <div class="missao-card"><i class="fas fa-handshake"></i><h4>Fortalecer o Cooperativismo</h4><p>Como modelo de transformação social.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ── PARTICIPAR ───────────────────────────────────────────── -->
+<section id="participar" class="section" style="background-color: #DBDBDB;">
+    <div class="container">
+        <h2 class="section-title">Quem pode participar?</h2>
+        <div class="participar-content">
+            <div class="participar-info">
+                <p>Destinado a <strong style="color:var(--lime-300)">jovens entre 16 e 20 anos</strong> que buscam transformação pessoal e profissional.</p>
+                <div class="participar-destaques">
+                    <div class="destaque-item"><i class="fas fa-clock"></i><span><strong>Duração:</strong> 10 meses</span></div>
+                    <div class="destaque-item"><i class="fas fa-users"></i><span><strong>Vagas:</strong> 20 por turma</span></div>
+                </div>
+                <div class="vagas-info">
+                    <div class="vaga-item"><span class="vaga-porcentagem">70%</span><span>Filhos/dependentes de cooperados Barracred</span></div>
+                    <div class="vaga-item"><span class="vaga-porcentagem">30%</span><span>Jovens da comunidade em geral</span></div>
+                </div>
+            </div>
+            <div class="requisitos-box">
+                <h3>Requisitos:</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> Ter entre 16 e 20 anos</li>
+                    <li><i class="fas fa-check-circle"></i> Cursando ou ter concluído o ensino básico na <strong>rede pública</strong></li>
+                    <li><i class="fas fa-check-circle"></i> Residir em <strong>Barra Bonita</strong> ou <strong>Igaraçu do Tietê - SP</strong></li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Comprometimento</strong> para participar integralmente</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── QUICK STATS ──────────────────────────────────────────── -->
+<div class="bc-quickstats">
+    <div class="bc-quickstats-item">
+        <div class="bc-quickstats-num">20</div>
+        <div class="bc-quickstats-label">Jovens por Turma</div>
+    </div>
+    <div class="bc-quickstats-item">
+        <div class="bc-quickstats-num">10</div>
+        <div class="bc-quickstats-label">Meses de Formação</div>
+    </div>
+    <div class="bc-quickstats-item">
+        <div class="bc-quickstats-num">100%</div>
+        <div class="bc-quickstats-label">Gratuito</div>
+    </div>
+    <div class="bc-quickstats-item">
+        <div class="bc-quickstats-num">6</div>
+        <div class="bc-quickstats-label">Módulos de Conteúdo</div>
+    </div>
+</div>
+
+<!-- ── CTA ──────────────────────────────────────────────────── -->
+<section id="inscrever" class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Gostou do Programa?</h2>
+            <p>Faça parte desta transformação. Inscreva-se para as próximas turmas!</p>
+            <a href="/inscricao" class="btn-cta"><i class="fas fa-clipboard-list"></i> Quero Me Inscrever</a>
+        </div>
+    </div>
+</section>
+
+<!-- ── EQUIPE ───────────────────────────────────────────────── -->
+<section id="equipe" class="section">
+    <div class="container">
+        <h2 class="section-title">Quem está com você nessa?</h2>
+        <p class="section-subtitle">Um time de profissionais dedicados à formação de jovens.</p>
+        <div class="equipe-grid">
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/andresa.jpg" alt="Andresa" /></div>
+                <h4>Andresa</h4><span class="cargo">Coordenadora</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/andresa-baratela-2b5544240/" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/andresabaratela/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/adilson.jpg" alt="Adilson" /></div>
+                <h4>Adilson</h4><span class="cargo">Assistente de Coordenação</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/adilson-nascimento-7b5a69b6" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/adilsonnascy/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/aline.jpg" alt="Prof Aline" /></div>
+                <h4>Profª Aline</h4><span class="cargo">Inglês Técnico</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/aline-pedra-07380381" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/alineropedra/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/cris.jpg" alt="Prof Cristiane" /></div>
+                <h4>Profª Cristiane</h4><span class="cargo">Hab. Pessoais e Profissionais</span>
+                <div class="equipe-social"><a href="https://www.instagram.com/_chris_alvess_/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/gallo2.jpg" alt="Prof Gallo" /></div>
+                <h4>Prof. Gallo</h4><span class="cargo">Tecnologia da Informação</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/gallo-junior/" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.github.com/gallojunior" target="_blank"><i class="fab fa-github"></i></a></div>
+            </div>
+            <div class="equipe-card">
+                <div class="equipe-foto"><img src="https://www.barracredconecta.com.br/assets/images/team/vera.jpg" alt="Prof Vera" /></div>
+                <h4>Profª Vera</h4><span class="cargo">Hab. Pessoais e Profissionais</span>
+                <div class="equipe-social"><a href="https://www.linkedin.com/in/vera-prado-scudeleti-b54912177/" target="_blank"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/veramaraprado/" target="_blank"><i class="fab fa-instagram"></i></a></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── ÁREA DO ALUNO ────────────────────────────────────────── -->
+<section id="aluno" class="section area-aluno">
+    <div class="container">
+        <div class="aluno-box">
+            <i class="fas fa-user-graduate"></i>
+            <h2>Área do Aluno</h2>
+            <p>Recursos, materiais e informações importantes do programa.</p>
+            <div class="aluno-recursos">
+                <a href="#" class="recurso-card"><i class="fas fa-book"></i><span>Material Didático</span></a>
+                <a href="#" class="recurso-card"><i class="fas fa-calendar-alt"></i><span>Calendário de Aulas</span></a>
+                <a href="#" class="recurso-card"><i class="fas fa-video"></i><span>Aulas Gravadas</span></a>
+                <a href="#" class="recurso-card"><i class="fas fa-envelope"></i><span>Fale com a Coordenação</span></a>
+            </div>
+            <div class="aluno-login">
+                <p>Utilize suas credenciais fornecidas pela coordenação para acessar.</p>
+                <a asp-controller="Account" asp-action="Login" class="btn-aluno-login">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── FOOTER ───────────────────────────────────────────────── -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="css/imagens/logo_conecta 2.png" alt="Conecta" style="height:50px;margin-bottom:0.5rem;" />
+            <p>Um programa social da Cooperativa Barracred para transformar a vida de jovens.</p>
+        </div>
+        <div class="footer-info">
+            <h4>Contato</h4>
+            <ul>
+                <li><a href="#">contato@barracredconecta.com.br</a></li>
+                <li><a href="#">Barra Bonita - SP</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>Links</h4>
+            <ul>
+                <li><a href="#sobre">Quem Somos</a></li>
+                <li><a href="#conteudo">Conteúdo</a></li>
+                <li><a href="#participar">Como Participar</a></li>
+                <li><a asp-controller="Account" asp-action="Login">Área do Aluno</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 Barracred Conecta · Cooperativa Barracred · Todos os direitos reservados</p>
+    </div>
+</footer>
+
+<a href="https://wa.me/551400000000" class="whatsapp-float" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+    window.addEventListener('scroll', () => {
+        document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    function toggleMenu() {
+        document.getElementById('navLinks').classList.toggle('active');
+    }
+</script>
+</body>
+</html>
