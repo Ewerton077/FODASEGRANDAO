@@ -1,5 +1,7 @@
 using backendconfigconecta.Data;
+using backendconfigconecta.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backendconfigconecta.Controllers;
@@ -8,19 +10,24 @@ namespace backendconfigconecta.Controllers;
 public class AlunoController : Controller
 {
     private readonly AppDbContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AlunoController(AppDbContext context)
+    public AlunoController(AppDbContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
     public IActionResult Index() => View();
-    
-    public IActionResult Posts()
+
+    public async Task<IActionResult> Posts()
     {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return Challenge();
+
         var posts = _context.Posts
+            .Where(p => p.UsuarioId == user.Id)
             .OrderByDescending(p => p.DataCriacao)
-            .Take(10)
             .ToList();
         return View(posts);
     }

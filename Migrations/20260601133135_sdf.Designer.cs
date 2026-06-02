@@ -12,8 +12,8 @@ using backendconfigconecta.Data;
 namespace backendconfigconecta.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260518190524_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260601133135_sdf")]
+    partial class sdf
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

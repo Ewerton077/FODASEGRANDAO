@@ -1,6 +1,6 @@
 using backendconfigconecta.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace backendconfigconecta.Data;
 
@@ -121,12 +121,24 @@ public static class SeedData
             await userManager.AddToRoleAsync(professor3, "Professor");
         #endregion
 
+        // Load seed images from wwwroot
+        var seedDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "css", "imagens", "seed");
+        var seedImages = new List<(byte[] data, string tipo)>();
+        if (Directory.Exists(seedDir))
+        {
+            foreach (var f in Directory.GetFiles(seedDir, "seed_img_*.jpg").OrderBy(f => f))
+            {
+                seedImages.Add((File.ReadAllBytes(f), "image/jpeg"));
+            }
+        }
+
         // Add sample posts for institutional area
         if (context != null)
         {
             if (!context.Posts.Any())
             {
-                context.Posts.AddRange(
+                var posts = new List<Post>
+                {
                     new Post
                     {
                         Titulo = "Conecta Talk com profissional de TI: carreira, mercado e dicas",
@@ -162,8 +174,28 @@ public static class SeedData
                         UsuarioId = aluno1.Id,
                         DataCriacao = DateTime.Now.AddDays(-20)
                     }
-                );
+                };
+
+                for (int i = 0; i < posts.Count && i < seedImages.Count; i++)
+                {
+                    posts[i].ImagemData = seedImages[i].data;
+                    posts[i].ImagemTipo = seedImages[i].tipo;
+                }
+
+                context.Posts.AddRange(posts);
                 await context.SaveChangesAsync();
+            }
+            else
+            {
+                // Fill in images for existing posts that don't have one
+                var postsSemImagem = await context.Posts.Where(p => p.ImagemData == null).OrderBy(p => p.DataCriacao).ToListAsync();
+                for (int i = 0; i < postsSemImagem.Count && i < seedImages.Count; i++)
+                {
+                    postsSemImagem[i].ImagemData = seedImages[i].data;
+                    postsSemImagem[i].ImagemTipo = seedImages[i].tipo;
+                }
+                if (postsSemImagem.Count > 0)
+                    await context.SaveChangesAsync();
             }
         }
     }

@@ -237,7 +237,7 @@
             background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
             color: #2a3d00;
             padding: 10px 24px;
-            border-radius: var(--radius-md);
+            border-radius: 5px;
             font-family: var(--font-mono);
             font-size: 11px;
             letter-spacing: 0.18em;
@@ -259,7 +259,7 @@
             color: #ffffff;
             border: 1px solid rgba(255,255,255,0.55);
             padding: 10px 24px;
-            border-radius: var(--radius-md);
+            border-radius: 5px;
             font-family: var(--font-mono);
             font-size: 11px;
             letter-spacing: 0.14em;
@@ -430,7 +430,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border-card);
             padding: 1.5rem;
-            border-radius: var(--radius-lg);
+            border-radius: 5px;
             text-align: center;
             box-shadow: var(--shadow-sm);
             transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
@@ -474,7 +474,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border-card);
             padding: 1.5rem;
-            border-radius: var(--radius-lg);
+            border-radius: 5px;
             text-align: center;
             box-shadow: var(--shadow-sm);
             transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
@@ -525,7 +525,7 @@
         .requisitos-box {
             background: var(--bg-card);
             border: 1px solid var(--border-card);
-            border-radius: var(--radius-lg);
+            border-radius: 5px;
             padding: 2rem;
             box-shadow: var(--shadow-sm);
         }
@@ -542,7 +542,7 @@
 
         /* ── CTA ── */
         .cta-section {
-            background-image: url(/css/imagens/bannerfundo.png);
+            background-image: url(/css/imagens/banner_fundo.png);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -559,7 +559,7 @@
             background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
             color: #2a3d00;
             padding: 12px 28px;
-            border-radius: var(--radius-md);
+            border-radius: 5px;
             font-family: var(--font-mono);
             font-size: 11px;
             letter-spacing: 0.18em;
@@ -586,7 +586,7 @@
         .equipe-card {
             background: var(--bg-card);
             border: 1px solid var(--border-card);
-            border-radius: var(--radius-lg);
+            border-radius: 5px;
             padding: 2.25rem 1.75rem;
             text-align: center;
             box-shadow: var(--shadow-sm);
@@ -635,7 +635,7 @@
         .parceiro-item {
             background: var(--bg-card);
             border: 1px solid var(--border-card);
-            border-radius: var(--radius-lg);
+            border-radius: 5px;
             padding: 1.5rem;
             text-align: center;
             box-shadow: var(--shadow-sm);
@@ -666,7 +666,7 @@
         .aluno-box {
             background: var(--bg-card);
             border: 1px solid var(--border-card);
-            border-radius: var(--radius-xl);
+            border-radius: 5px;
             padding: 2.5rem;
             text-align: center;
             max-width: 800px;
@@ -685,7 +685,7 @@
         .recurso-card {
             background: var(--bg-section);
             border: 1px solid var(--border-card);
-            border-radius: var(--radius-md);
+            border-radius: 5px;
             padding: 1.25rem;
             text-decoration: none;
             color: var(--text-200);
@@ -710,7 +710,7 @@
             background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
             color: #2a3d00;
             padding: 10px 24px;
-            border-radius: var(--radius-md);
+            border-radius: 5px;
             font-family: var(--font-mono);
             font-size: 11px;
             letter-spacing: 0.16em;
@@ -757,7 +757,7 @@
         .turma-card {
             background: var(--bg-card);
             border: 1px solid var(--border-card);
-            border-radius: var(--radius-lg);
+            border-radius: 5px;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -910,7 +910,7 @@
 </header>
 
 <!-- ── HERO (80vh) ──────────────────────────────────────────── -->
-<section id="home" class="hero" style="background-image: url('@Url.Content("~/css/imagens/porque_bg.png")');">
+<section id="home" class="hero" style="background-image: url('@Url.Content("~/css/imagens/porque.png")');">
     <div class="hero-overlay"></div>
     <div class="hero-waves">
         <div class="hero-wave wave-1"></div>
@@ -925,12 +925,7 @@
         <h2>Criando Oportunidades e Cooperando para o Futuro</h2>
         <p>Um programa pensado para inspirar, capacitar e criar conexões com o futuro<br>por meio da educação, do conhecimento e do desenvolvimento humano.</p>
         <p class="destaque">Porque quando a gente coopera, a transformação acontece!</p>
-        <div class="hero-btns">
-            <a href="/inscricao" class="btn-primary-hero">
-                <i class="fas fa-clipboard-list"></i> Quero Me Inscrever
-            </a>
-            <a href="#sobre" class="btn-secondary-hero">Saiba Mais</a>
-        </div>
+
     </div>
 </section>
 
@@ -1065,7 +1060,6 @@
         <div class="cta-content">
             <h2>Gostou do Programa?</h2>
             <p>Faça parte desta transformação. Inscreva-se para as próximas turmas!</p>
-            <a href="/inscricao" class="btn-cta"><i class="fas fa-clipboard-list"></i> Quero Me Inscrever</a>
         </div>
     </div>
 </section>
@@ -1173,6 +1167,16 @@
     function toggleMenu() {
         document.getElementById('navLinks').classList.toggle('active');
     }
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('navLinks').classList.remove('active');
+            }
+        });
+    });
 </script>
 </body>
 </html>

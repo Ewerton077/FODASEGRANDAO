@@ -50,6 +50,17 @@ public class PostController : Controller
             return Challenge();
         }
 
+        var roles = await _userManager.GetRolesAsync(user);
+        if (roles.Contains("Aluno"))
+        {
+            var postCount = _context.Posts.Count(p => p.UsuarioId == user.Id);
+            if (postCount >= 2)
+            {
+                ModelState.AddModelError("", "Você atingiu o limite máximo de 2 posts.");
+                return View(model);
+            }
+        }
+
         var post = new Post
         {
             Titulo = model.Titulo,
@@ -84,10 +95,28 @@ public class PostController : Controller
         _context.Posts.Add(post);
         await _context.SaveChangesAsync();
 
-        var roles = await _userManager.GetRolesAsync(user);
         if (roles.Contains("Aluno"))
             return RedirectToAction("Index", "Aluno");
         return RedirectToAction("Index", "Professor");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return Challenge();
+
+        var post = await _context.Posts.FindAsync(id);
+        if (post == null) return NotFound();
+
+        if (post.UsuarioId != user.Id)
+            return Forbid();
+
+        _context.Posts.Remove(post);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Index", "Aluno");
     }
 }
 

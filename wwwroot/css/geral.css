@@ -653,7 +653,7 @@ body {
 .missao-card {
   background: rgba(255, 255, 255, 0.1);
   padding: 2rem;
-  border-radius: 15px;
+  border-radius: 5px;
   text-align: center;
   transition: all 0.3s;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -689,7 +689,7 @@ body {
 .conteudo-card {
   background: var(--card-bg);
   padding: 2rem;
-  border-radius: 15px;
+  border-radius: 5px;
   text-align: center;
   transition: all 0.3s;
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -786,7 +786,7 @@ body {
 
 .turma-card {
   background: var(--card-bg);
-  border-radius: 15px;
+  border-radius: 5px;
   overflow: hidden;
   transition: all 0.3s;
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -891,7 +891,7 @@ body {
 .requisitos-box {
   background: var(--card-bg);
   padding: 2rem;
-  border-radius: 15px;
+  border-radius: 5px;
 }
 
 .requisitos-box h3 {
@@ -951,7 +951,7 @@ body {
 .equipe-card {
   background: var(--card-bg);
   padding: 2rem 1rem;
-  border-radius: 15px;
+  border-radius: 5px;
   text-align: center;
   transition: all 0.3s;
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -1012,7 +1012,7 @@ body {
 .parceiro-item {
   background: var(--background);
   padding: 2rem;
-  border-radius: 15px;
+  border-radius: 5px;
   text-align: center;
 }
 
@@ -1035,7 +1035,7 @@ body {
 .aluno-box {
   background: var(--background);
   padding: 3rem;
-  border-radius: 20px;
+  border-radius: 5px;
   text-align: center;
   max-width: 800px;
   margin: 0 auto;
@@ -1067,7 +1067,7 @@ body {
 .recurso-card {
   background: var(--card-bg);
   padding: 1.5rem;
-  border-radius: 15px;
+  border-radius: 5px;
   text-decoration: none;
   color: var(--foreground);
   display: flex;
@@ -1602,7 +1602,7 @@ body::before {
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: 5px;
     box-shadow: var(--shadow-md);
 }
 
@@ -1611,7 +1611,7 @@ body::before {
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border: 1px solid rgba(74,139,130,0.18);
-    border-radius: var(--radius-lg);
+    border-radius: 5px;
     box-shadow: 0 8px 32px rgba(5,18,17,0.15);
 }
 
@@ -1711,7 +1711,7 @@ body::before {
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: 5px;
     padding: 24px;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -1735,7 +1735,7 @@ body::before {
 .stat-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: 5px;
     padding: 20px;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);

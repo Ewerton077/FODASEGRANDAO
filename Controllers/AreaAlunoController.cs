@@ -18,7 +18,6 @@ public class AreaAlunoController : Controller
         var posts = await _context.Posts
             .Include(p => p.Usuario)
             .OrderByDescending(p => p.DataCriacao)
-            .Take(6)
             .ToListAsync();
         return View(posts);
     }

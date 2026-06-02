@@ -248,7 +248,7 @@ img { display: block; max-width: 100%; }
     padding: 64px 32px 48px;
     border-bottom: 1px solid var(--bc-border);
     overflow: hidden;
-    background-image: url('/css/imagens/bannerfundo.png');
+    background-image: url('/css/imagens/banner_fundo.png');
     background-size: cover;
     background-position: center;
 }
@@ -297,7 +297,7 @@ img { display: block; max-width: 100%; }
     display: flex; flex-direction: column; gap: 2px;
     background: var(--bc-card);
     border: 1px solid var(--bc-border);
-    border-radius: var(--bc-r-xl);
+    border-radius: 5px;
     padding: 24px 28px;
     backdrop-filter: blur(16px);
     min-width: 200px;
@@ -339,6 +339,16 @@ img { display: block; max-width: 100%; }
     font-size: 1.7rem; font-weight: 700;
     color: var(--bc-title); line-height: 1.2;
 }
+#blog .pa-section-title,
+#registros .pa-section-title {
+    color: var(--green-primary);
+}
+#blog .pa-section-desc,
+#blog .pa-section-eyebrow,
+#registros .pa-section-desc,
+#registros .pa-section-eyebrow {
+    color: #7DDB9A;
+}
 
 .pa-section-desc {
     font-size: 0.9rem; color: var(--bc-text-body2);
@@ -355,7 +365,7 @@ img { display: block; max-width: 100%; }
 .pa-indicator-card {
     background: var(--bc-card);
     border: 1px solid var(--bc-border);
-    border-radius: var(--bc-r-lg);
+    border-radius: 5px;
     padding: 24px 20px;
     backdrop-filter: blur(16px);
     text-align: center;
@@ -406,7 +416,7 @@ img { display: block; max-width: 100%; }
 .pa-talento-card {
     background: var(--bc-card);
     border: 1px solid var(--bc-border);
-    border-radius: var(--bc-r-lg);
+    border-radius: 5px;
     padding: 24px 20px;
     backdrop-filter: blur(14px);
     text-align: center;
@@ -488,7 +498,7 @@ img { display: block; max-width: 100%; }
 .pa-blog-featured {
     background: var(--bc-card);
     border: 1px solid var(--bc-border);
-    border-radius: var(--bc-r-xl);
+    border-radius: 5px;
     overflow: hidden;
     backdrop-filter: blur(14px);
     transition: border-color 0.2s;
@@ -505,7 +515,7 @@ img { display: block; max-width: 100%; }
 }
 .pa-blog-featured-img img { width: 100%; height: 100%; object-fit: cover; }
 .pa-blog-featured-img-placeholder {
-    font-size: 48px; color: var(--bc-border);
+    font-size: 48px; color: rgba(255,255,255,0.4);
 }
 
 .pa-blog-featured-cat {
@@ -564,7 +574,7 @@ img { display: block; max-width: 100%; }
 .pa-blog-list-item {
     background: var(--bc-card);
     border: 1px solid var(--bc-border);
-    border-radius: var(--bc-r-lg);
+    border-radius: 5px;
     overflow: hidden;
     display: flex; gap: 0;
     backdrop-filter: blur(14px);
@@ -612,6 +622,63 @@ img { display: block; max-width: 100%; }
     color: var(--green-primary);
 }
 
+/* ── BLOG FEED ────────────────────────────────────── */
+.pa-blog-feed { width: 100%; }
+.pa-feed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+.pa-feed-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.pa-feed-flex .pa-feed-card {
+    flex: 1 1 280px;
+    max-width: 100%;
+}
+.pa-feed-card {
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid var(--bc-border);
+    background: #1a1a1a;
+    aspect-ratio: 4/3;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+}
+.pa-feed-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(11,94,58,0.85) 0%, rgba(11,94,58,0.15) 60%, transparent 100%);
+    opacity: 1;
+    display: flex; align-items: flex-end; padding: 14px;
+    pointer-events: none;
+}
+.pa-feed-info { }
+.pa-feed-author {
+    font-size: 0.75rem; font-weight: 600;
+    color: #B8F0C8; margin-bottom: 2px;
+}
+.pa-feed-title {
+    font-family: var(--bc-mono); font-size: 9px;
+    letter-spacing: 0.1em; color: rgba(180,240,200,0.7);
+    text-transform: uppercase;
+}
+.pa-feed-card:hover {
+    border-color: var(--bc-border-h);
+    transform: translateY(-2px);
+}
+.pa-feed-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s;
+}
+.pa-feed-card:hover img { transform: scale(1.04); }
+.pa-feed-empty {
+    text-align: center; padding: 60px 20px;
+    color: rgba(255,255,255,0.4); font-size: 14px;
+}
+.pa-feed-empty i { font-size: 48px; display: block; margin-bottom: 12px; }
+
 /* ── GALERIA ──────────────────────────────────────── */
 .pa-galeria-grid {
     display: grid;
@@ -621,7 +688,7 @@ img { display: block; max-width: 100%; }
 .pa-galeria-grid .span2 { grid-column: span 2; }
 
 .pa-galeria-item {
-    border-radius: var(--bc-r-lg);
+    border-radius: 5px;
     overflow: hidden;
     border: 1px solid var(--bc-border);
     position: relative; cursor: pointer;
@@ -640,28 +707,30 @@ img { display: block; max-width: 100%; }
 .pa-galeria-item:hover { border-color: var(--bc-border-h); transform: translateY(-2px); }
 
 .pa-galeria-placeholder {
-    font-size: 32px; color: var(--bc-border);
+    font-size: 32px; color: rgba(255,255,255,0.4);
     display: flex; align-items: center; justify-content: center;
     width: 100%; height: 100%;
 }
 
 .pa-galeria-overlay {
     position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(11,94,58,0.85) 0%, transparent 50%);
-    opacity: 0; transition: opacity 0.3s;
+    background: linear-gradient(to top, rgba(11,94,58,0.8) 0%, rgba(11,94,58,0.15) 60%, transparent 100%);
+    opacity: 1;
     display: flex; align-items: flex-end; padding: 16px;
 }
-.pa-galeria-item:hover .pa-galeria-overlay { opacity: 1; }
 
 .pa-galeria-info { }
 .pa-galeria-title {
     font-size: 0.82rem; font-weight: 600;
-    color: var(--bc-text); margin-bottom: 2px;
+    color: #B8F0C8; margin-bottom: 2px;
 }
 .pa-galeria-date {
     font-family: var(--bc-mono); font-size: 9px;
-    letter-spacing: 0.1em; color: var(--bc-muted);
+    letter-spacing: 0.1em; color: rgba(180,240,200,0.7);
 }
+
+#galeria .pa-section-eyebrow { color: #7DDB9A; }
+#galeria .pa-section-desc { color: #7DDB9A; }
 
 /* ── OPORTUNIDADES ────────────────────────────────── */
 .pa-oport-grid {
@@ -673,7 +742,7 @@ img { display: block; max-width: 100%; }
 .pa-oport-card {
     background: var(--bc-card);
     border: 1px solid var(--bc-border);
-    border-radius: var(--bc-r-lg);
+    border-radius: 5px;
     padding: 22px;
     backdrop-filter: blur(14px);
     transition: border-color 0.2s, transform 0.2s;
@@ -759,7 +828,7 @@ img { display: block; max-width: 100%; }
 .pa-depo-card {
     background: var(--bc-card);
     border: 1px solid var(--bc-border);
-    border-radius: var(--bc-r-xl);
+    border-radius: 5px;
     padding: 28px 24px;
     backdrop-filter: blur(14px);
     transition: border-color 0.2s, transform 0.2s;
@@ -822,7 +891,7 @@ img { display: block; max-width: 100%; }
 .pa-registro-card {
     background: var(--bc-card);
     border: 1px solid var(--bc-border);
-    border-radius: var(--bc-r-lg);
+    border-radius: 5px;
     overflow: hidden;
     backdrop-filter: blur(14px);
     transition: border-color 0.2s, transform 0.2s;
@@ -841,7 +910,7 @@ img { display: block; max-width: 100%; }
 }
 .pa-registro-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
 .pa-registro-card:hover .pa-registro-thumb img { transform: scale(1.05); }
-.pa-registro-thumb-placeholder { font-size: 28px; color: var(--bc-border); }
+.pa-registro-thumb-placeholder { font-size: 28px; color: rgba(255,255,255,0.4); }
 
 .pa-registro-type-badge {
     position: absolute; top: 10px; left: 10px;
@@ -1154,55 +1223,26 @@ img { display: block; max-width: 100%; }
             <button class="pa-filter-btn">Depoimentos</button>
         </div>
 
-        <div class="pa-blog-grid">
-            <!-- Post em destaque -->
+        <div class="pa-blog-feed">
             @if (Model != null && Model.Any())
             {
-                var destaque = Model.First();
-                <div class="pa-blog-featured pa-anim-1">
-                    <div class="pa-blog-featured-img">
-                        @if (destaque.ImagemData != null)
-                        {
-                            <img src="data:@destaque.ImagemTipo;base64,@Convert.ToBase64String(destaque.ImagemData)" alt="@destaque.Titulo" style="width:100%;height:100%;object-fit:cover;" />
-                        }
-                        else
-                        {
-                            <div class="pa-blog-featured-img-placeholder"><i class="fas fa-image"></i></div>
-                        }
-                        <div class="pa-blog-featured-cat">
-                            <span class="pa-cat-badge talk">Conecta Talk</span>
-                        </div>
-                    </div>
-                    <div class="pa-blog-featured-body">
-                        <div class="pa-blog-featured-meta">
-                            <span><i class="fas fa-calendar"></i> @destaque.DataCriacao.ToString("dd MMM yyyy")</span>
-                            <span><i class="fas fa-user"></i> @destaque.Usuario?.Nome</span>
-                        </div>
-                        <h3 class="pa-blog-featured-title">@destaque.Titulo</h3>
-                        <p class="pa-blog-featured-desc">@destaque.Descricao</p>
-                        <a href="#" class="pa-btn-read">Ler publicação <i class="fas fa-arrow-right" style="font-size:8px"></i></a>
-                    </div>
-                </div>
-
-                <!-- Lista lateral -->
-                <div class="pa-blog-side pa-anim-2">
-                    @foreach (var post in Model.Skip(1).Take(3))
+                <div class="pa-feed-grid">
+                    @foreach (var post in Model)
                     {
-                        <div class="pa-blog-list-item">
-                            <div class="pa-blog-list-thumb">
-                                @if (post.ImagemData != null)
-                                {
-                                    <img src="data:@post.ImagemTipo;base64,@Convert.ToBase64String(post.ImagemData)" alt="@post.Titulo" />
-                                }
-                                else
-                                {
-                                    <i class="fas fa-image"></i>
-                                }
-                            </div>
-                            <div class="pa-blog-list-body">
-                                <div class="pa-blog-list-cat"><span class="pa-cat-badge aulas">Aulas</span></div>
-                                <div class="pa-blog-list-title">@post.Titulo</div>
-                                <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> @post.DataCriacao.ToString("dd MMM yyyy")</div>
+                        <div class="pa-feed-card">
+                            @if (post.ImagemData != null)
+                            {
+                                <img src="data:@post.ImagemTipo;base64,@Convert.ToBase64String(post.ImagemData)" alt="@post.Titulo" />
+                            }
+                            else
+                            {
+                                <img src="https://picsum.photos/seed/@(post.Id)/400/300" alt="" />
+                            }
+                            <div class="pa-feed-overlay">
+                                <div class="pa-feed-info">
+                                    <div class="pa-feed-author">@post.Usuario?.Nome</div>
+                                    <div class="pa-feed-title">@post.Titulo</div>
+                                </div>
                             </div>
                         </div>
                     }
@@ -1210,67 +1250,21 @@ img { display: block; max-width: 100%; }
             }
             else
             {
-                <div class="pa-blog-featured pa-anim-1">
-                    <div class="pa-blog-featured-img">
-                        <div class="pa-blog-featured-img-placeholder"><i class="fas fa-image"></i></div>
-                        <div class="pa-blog-featured-cat">
-                            <span class="pa-cat-badge talk">Conecta Talk</span>
+                <div class="pa-feed-grid">
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        <div class="pa-feed-card">
+                            <img src="https://picsum.photos/seed/pub@(i)/400/300" alt="" />
+                            <div class="pa-feed-overlay">
+                                <div class="pa-feed-info">
+                                    <div class="pa-feed-author">Barracred Conecta</div>
+                                    <div class="pa-feed-title">Em breve...</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="pa-blog-featured-body">
-                        <div class="pa-blog-featured-meta">
-                            <span><i class="fas fa-calendar"></i> 24 Mar 2026</span>
-                            <span><i class="fas fa-user"></i> Coord. Andresa</span>
-                        </div>
-                        <h3 class="pa-blog-featured-title">Conecta Talk com profissional de TI: carreira, mercado e dicas para quem está começando</h3>
-                        <p class="pa-blog-featured-desc">
-                            A turma recebeu um profissional da área de desenvolvimento de software para uma tarde de troca intensa.
-                            Foram abordados temas como portfólio, primeiros empregos, soft skills e muito mais.
-                        </p>
-                        <a href="#" class="pa-btn-read">Ler publicação <i class="fas fa-arrow-right" style="font-size:8px"></i></a>
-                    </div>
-                </div>
-
-                <!-- Lista lateral -->
-                <div class="pa-blog-side pa-anim-2">
-                    <div class="pa-blog-list-item">
-                        <div class="pa-blog-list-thumb"><i class="fas fa-image"></i></div>
-                        <div class="pa-blog-list-body">
-                            <div class="pa-blog-list-cat"><span class="pa-cat-badge aulas">Aulas</span></div>
-                            <div class="pa-blog-list-title">Módulo 4 — Banco de dados relacional: primeira query dos alunos</div>
-                            <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> 20 Mar 2026</div>
-                        </div>
-                    </div>
-                    <div class="pa-blog-list-item">
-                        <div class="pa-blog-list-thumb"><i class="fas fa-image"></i></div>
-                        <div class="pa-blog-list-body">
-                            <div class="pa-blog-list-cat"><span class="pa-cat-badge visita">Visita Técnica</span></div>
-                            <div class="pa-blog-list-title">Visita à empresa parceira: como é a rotina de um analista de sistemas</div>
-                            <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> 14 Mar 2026</div>
-                        </div>
-                    </div>
-                    <div class="pa-blog-list-item">
-                        <div class="pa-blog-list-thumb"><i class="fas fa-image"></i></div>
-                        <div class="pa-blog-list-body">
-                            <div class="pa-blog-list-cat"><span class="pa-cat-badge evento">Evento</span></div>
-                            <div class="pa-blog-list-title">Semana da Cooperação — alunos participam de painel sobre ESG e cooperativismo</div>
-                            <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> 08 Mar 2026</div>
-                        </div>
-                    </div>
-                    <div class="pa-blog-list-item">
-                        <div class="pa-blog-list-thumb"><i class="fas fa-image"></i></div>
-                        <div class="pa-blog-list-body">
-                            <div class="pa-blog-list-cat"><span class="pa-cat-badge depoimento">Depoimento</span></div>
-                            <div class="pa-blog-list-title">"O programa mudou minha perspectiva" — depoimento da egressa Fernanda</div>
-                            <div class="pa-blog-list-date"><i class="fas fa-calendar"></i> 02 Mar 2026</div>
-                        </div>
-                    </div>
+                    }
                 </div>
             }
-        </div>
-
-        <div class="pa-show-all">
-            <button class="pa-btn-all"><i class="fas fa-newspaper"></i> Ver todas as publicações</button>
         </div>
     </div>
 </section>
@@ -1288,51 +1282,46 @@ img { display: block; max-width: 100%; }
             <p class="pa-section-desc">Turmas, formaturas, visitas técnicas, Conecta Talks e eventos que marcaram nossa história.</p>
         </div>
 
-        <div class="pa-registros-grid">
-            <div class="pa-registro-card pa-anim-1">
-                <div class="pa-registro-thumb">
-                    <div class="pa-registro-thumb-placeholder"><i class="fas fa-users"></i></div>
-                    <div class="pa-registro-type-badge"><span class="pa-cat-badge aulas">Turma</span></div>
+        <div class="pa-feed-flex">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var post in Model)
+                {
+                    <div class="pa-feed-card">
+                        @if (post.ImagemData != null)
+                        {
+                            <img src="data:@post.ImagemTipo;base64,@Convert.ToBase64String(post.ImagemData)" alt="@post.Titulo" />
+                        }
+                        else
+                        {
+                            <img src="https://picsum.photos/seed/@(post.Id)/400/300" alt="" />
+                        }
+                        <div class="pa-feed-overlay">
+                            <div class="pa-feed-info">
+                                <div class="pa-feed-author">@post.Usuario?.Nome</div>
+                                <div class="pa-feed-title">@post.Titulo</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="pa-feed-flex">
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        <div class="pa-feed-card">
+                            <img src="https://picsum.photos/seed/reg@(i)/400/300" alt="" />
+                            <div class="pa-feed-overlay">
+                                <div class="pa-feed-info">
+                                    <div class="pa-feed-author">Barracred Conecta</div>
+                                    <div class="pa-feed-title">Em breve...</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
-                <div class="pa-registro-body">
-                    <div class="pa-registro-title">Turma 01 — Formatura & Encerramento</div>
-                    <div class="pa-registro-date"><i class="fas fa-calendar"></i> Dezembro 2022</div>
-                </div>
-            </div>
-            <div class="pa-registro-card pa-anim-2">
-                <div class="pa-registro-thumb">
-                    <div class="pa-registro-thumb-placeholder"><i class="fas fa-microphone"></i></div>
-                    <div class="pa-registro-type-badge"><span class="pa-cat-badge talk">Conecta Talk</span></div>
-                </div>
-                <div class="pa-registro-body">
-                    <div class="pa-registro-title">Conecta Talk #01 — Carreira em TI</div>
-                    <div class="pa-registro-date"><i class="fas fa-calendar"></i> Agosto 2023</div>
-                </div>
-            </div>
-            <div class="pa-registro-card pa-anim-3">
-                <div class="pa-registro-thumb">
-                    <div class="pa-registro-thumb-placeholder"><i class="fas fa-bus"></i></div>
-                    <div class="pa-registro-type-badge"><span class="pa-cat-badge visita">Visita</span></div>
-                </div>
-                <div class="pa-registro-body">
-                    <div class="pa-registro-title">Visita Técnica — SEBRAE Regional</div>
-                    <div class="pa-registro-date"><i class="fas fa-calendar"></i> Outubro 2023</div>
-                </div>
-            </div>
-            <div class="pa-registro-card pa-anim-4">
-                <div class="pa-registro-thumb">
-                    <div class="pa-registro-thumb-placeholder"><i class="fas fa-star"></i></div>
-                    <div class="pa-registro-type-badge"><span class="pa-cat-badge evento">Evento</span></div>
-                </div>
-                <div class="pa-registro-body">
-                    <div class="pa-registro-title">Feira de Cooperativismo — Turma 02</div>
-                    <div class="pa-registro-date"><i class="fas fa-calendar"></i> Maio 2024</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pa-show-all">
-            <button class="pa-btn-all"><i class="fas fa-archive"></i> Ver todos os registros</button>
+            }
         </div>
     </div>
 </section>
@@ -1545,7 +1534,6 @@ img { display: block; max-width: 100%; }
                 </p>
                 <div class="pa-oport-footer">
                     <span class="pa-oport-prazo"><i class="fas fa-clock"></i> Turma em Maio</span>
-                    <button class="pa-btn-candidatar">Saiba mais</button>
                 </div>
             </div>
         </div>

@@ -1,0 +1,126 @@
+@model List<backendconfigconecta.Controllers.StudentViewModel>
+@{
+    ViewData["Title"] = "Gerenciar Alunos";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduSys — Alunos</title>
+    <link rel="stylesheet" href="~/css/geral.css" />
+    <style>
+        :root {
+            --brand-lime: #1EB53A;
+            --brand-lime-dark: #008744;
+            --brand-teal: #08785B;
+            --font-sans: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', monospace;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --border: rgba(30, 181, 58, 0.15);
+            --border-strong: rgba(30, 181, 58, 0.30);
+            --text-100: #1a2e1a;
+            --text-200: #1a3d1a;
+            --text-400: #4a7a4a;
+            --text-600: #6a9a6a;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        body { background: linear-gradient(165deg, #051211 0%, #0B2B28 50%, #051211 100%); font-family: var(--font-sans); min-height: 100vh; }
+        .page-wrap { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+        .page-title { font-size: 22px; font-weight: 700; color: #ffffff; }
+        .page-title span { color: var(--brand-lime); }
+        .btn-primary {
+            background: linear-gradient(135deg, #76C057 0%, #3C8F40 100%);
+            color: #0D2B18; font-weight: 700; border: none; padding: 10px 20px; border-radius: 5px;
+            cursor: pointer; font-size: 11px; letter-spacing: 0.1em; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-primary:hover { background: linear-gradient(135deg, #A8D582 0%, #76C057 100%); }
+        .btn-sm { padding: 6px 12px; font-size: 10px; border: none; border-radius: 5px; cursor: pointer; font-family: var(--font-mono); letter-spacing: 0.1em; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-warning { background: #ffc107; color: #212529; }
+        .btn-warning:hover { background: #e0a800; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-success:hover { background: #218838; }
+        table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 5px; overflow: hidden; box-shadow: var(--shadow-md); }
+        th, td { padding: 12px 16px; text-align: left; font-size: 13px; }
+        th { background: #004438; color: #ffffff; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; }
+        td { color: var(--text-200); border-bottom: 1px solid var(--border); }
+        tr:last-child td { border-bottom: none; }
+        .badge { font-family: var(--font-mono); font-size: 9px; padding: 3px 8px; border-radius: 9999px; }
+        .badge-ok { background: rgba(40,167,69,0.15); color: #28a745; }
+        .badge-blocked { background: rgba(220,53,69,0.15); color: #dc3545; }
+        .actions { display: flex; gap: 4px; }
+        .back-link { color: var(--brand-lime); text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; }
+        .back-link:hover { color: var(--brand-lime-dark); }
+        .empty { text-align: center; padding: 60px; color: var(--text-400); }
+        .post-count { font-family: var(--font-mono); font-size: 11px; color: var(--text-600); }
+    </style>
+</head>
+<body>
+    <div class="page-wrap">
+        <a href="@Url.Action("Index", "Professor")" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Voltar ao painel
+        </a>
+        <div class="page-header">
+            <h1 class="page-title">Gerenciar <span>Alunos</span></h1>
+            <a href="@Url.Action("CreateStudent")" class="btn-primary">+ NOVO ALUNO</a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="empty"><p>Nenhum aluno cadastrado.</p></div>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Posts</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        <tr>
+                            <td>@s.Nome</td>
+                            <td>@s.Email</td>
+                            <td class="post-count">@s.PostCount</td>
+                            <td>
+                                @if (s.Blocked)
+                                {
+                                    <span class="badge badge-blocked">BLOQUEADO</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-ok">ATIVO</span>
+                                }
+                            </td>
+                            <td class="actions">
+                                <form asp-action="ToggleBlock" asp-route-id="@s.Id" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-sm @(s.Blocked ? "btn-success" : "btn-warning")">
+                                        @(s.Blocked ? "DESBLOQUEAR" : "BLOQUEAR")
+                                    </button>
+                                </form>
+                                <form asp-action="DeleteStudent" asp-route-id="@s.Id" method="post" style="display:inline;" onsubmit="return confirm('Excluir @s.Nome permanentemente?')">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-sm btn-danger">EXCLUIR</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</body>
+</html>

@@ -42,6 +42,12 @@ public class AccountController : Controller
             return View(model);
         }
 
+        if (user.Blocked)
+        {
+            ModelState.AddModelError(string.Empty, "Sua conta foi bloqueada. Entre em contato com o professor.");
+            return View(model);
+        }
+
         var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: false);
 
         if (result.Succeeded)
