@@ -12,7 +12,61 @@
     <link rel="stylesheet" href="~/css/geral.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        body { background: linear-gradient(165deg, #051211 0%, #0B2B28 50%, #051211 100%); }
+        :root {
+            --brand-lime: #1EB53A;
+            --brand-lime-dark: #008744;
+            --brand-lime-light: #31f301;
+            --brand-green: #1EB53A;
+            --brand-green-mid: #008744;
+            --brand-green-dark: #004438;
+            --brand-teal: #08785B;
+
+            --font-sans: 'Segoe UI', system-ui, sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', monospace;
+
+            --bg-deep: #f4faf4;
+            --bg-mid: #eaf5ea;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-card-alt: rgba(244, 250, 244, 0.85);
+            --bg-row: rgba(30, 181, 58, 0.05);
+            --bg-input: rgba(30, 181, 58, 0.04);
+
+            --teal-400: #08785B;
+            --teal-600: #065a45;
+            --teal-800: #043d2e;
+
+            --lime-300: #1EB53A;
+            --lime-400: #1EB53A;
+            --lime-600: #008744;
+            --lime-700: #006633;
+            --lime-900: #004438;
+
+            --border:       rgba(30, 181, 58, 0.15);
+            --border-strong:rgba(30, 181, 58, 0.30);
+            --border-hover: rgba(30, 181, 58, 0.40);
+            --border-lime:  rgba(30, 181, 58, 0.25);
+
+            --text-100: #1a2e1a;
+            --text-200: #1a3d1a;
+            --text-400: #4a7a4a;
+            --text-600: #6a9a6a;
+            --text-800: #9aba9a;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --glow-teal: 0 0 16px rgba(8, 120, 91, 0.15);
+            --glow-lime: 0 0 16px rgba(30, 181, 58, 0.20);
+
+            --radius-sm: 4px;
+            --radius-md: 5px;
+            --radius-lg: 5px;
+            --radius-xl: 5px;
+            --radius-full: 9999px;
+        }
+
+        body { background: #FFFFFF; font-family: var(--font-sans); }
+        body::before { display: none; }
 
         .posts-page { min-height: 100vh; display: flex; flex-direction: column; }
 
@@ -20,20 +74,19 @@
         .posts-topbar {
             position: sticky; top: 0; z-index: 10;
             display: flex; align-items: center; gap: 16px;
-            padding: 14px 32px;
-            background: rgba(5,18,17,0.85);
-            backdrop-filter: blur(14px);
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.14);
             border-bottom: 1px solid var(--border);
         }
 
         .posts-topbar .back-link {
-            display: inline-flex; align-items: center; gap: 7px;
-            font-family: var(--font-mono); font-size: 10px;
+            display: inline-flex; align-items: center; gap: 10px;
+            font-family: var(--font-mono); font-size: 13px;
             letter-spacing: 0.14em; color: var(--text-600);
             text-decoration: none; transition: color 0.2s;
         }
         .posts-topbar .back-link:hover { color: var(--lime-300); }
-        .posts-topbar .back-link svg { width: 14px; height: 14px; }
+        .posts-topbar .back-link svg { width: 18px; height: 18px; }
 
         .posts-topbar-sep { width: 1px; height: 18px; background: var(--border); }
 
@@ -62,18 +115,17 @@
 
         /* ── POST CARD REDESIGNED ── */
         .post-card {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(118,192,87,0.2);
-            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 5px;
             margin-bottom: 24px;
-            backdrop-filter: blur(14px);
             box-shadow: var(--shadow-sm);
             overflow: hidden;
             transition: border-color 0.22s, box-shadow 0.22s, transform 0.22s;
         }
         .post-card:hover {
             border-color: var(--border-strong);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-md);
             transform: translateY(-3px);
         }
 
@@ -82,7 +134,7 @@
             width: 100%;
             height: 320px;
             overflow: hidden;
-            background: linear-gradient(135deg, #0B3B2A 0%, #1A5C3E 100%);
+            background: linear-gradient(135deg, #eaf5ea 0%, #d4edd4 100%);
         }
 
         .post-card-image-wrap img {
@@ -96,7 +148,7 @@
 
         .post-card-image-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(5,18,17,0.85) 0%, rgba(5,18,17,0.1) 60%, transparent 100%);
+            background: linear-gradient(to top, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.1) 60%, transparent 100%);
             pointer-events: none;
         }
 
@@ -105,16 +157,16 @@
             font-family: var(--font-mono); font-size: 9px;
             letter-spacing: 0.12em; text-transform: uppercase;
             padding: 5px 12px; border-radius: 9999px;
-            background: rgba(0,0,0,0.55);
+            background: rgba(255,255,255,0.85);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.75);
+            border: 1px solid var(--border);
+            color: var(--text-600);
         }
 
         .post-card-image-placeholder {
             width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 48px; color: rgba(255,255,255,0.2);
+            font-size: 48px; color: var(--text-800);
         }
 
         .post-card-body {
@@ -200,33 +252,22 @@
 <body>
 <div class="posts-page">
 
-    <div class="glow-blob" style="width:500px;height:400px;top:-100px;right:-80px;background:radial-gradient(circle,rgba(118,192,87,0.06) 0%,transparent 70%);"></div>
-    <div class="glow-blob" style="width:400px;height:400px;bottom:-80px;left:-60px;background:radial-gradient(circle,rgba(74,139,130,0.06) 0%,transparent 70%);"></div>
-
     <!-- Topbar -->
     <header class="posts-topbar">
         <a class="back-link" asp-controller="Aluno" asp-action="Index">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            Dashboard
+            Voltar ao início
         </a>
         <div class="posts-topbar-sep"></div>
         <div class="navbar-brand">
-            <div class="navbar-logo-icon">
-                <svg viewBox="0 0 18 18" fill="none">
-                    <rect x="1" y="1" width="6" height="6" rx="1" stroke="#76C057" stroke-width="1.5"/>
-                    <rect x="11" y="1" width="6" height="6" rx="1" stroke="#76C057" stroke-width="1.5"/>
-                    <rect x="1" y="11" width="6" height="6" rx="1" stroke="#76C057" stroke-width="1.5"/>
-                    <rect x="11" y="11" width="6" height="6" rx="1" stroke="#A8D582" stroke-width="1.5" opacity=".55"/>
-                </svg>
-            </div>
-            <span class="navbar-brand-text" style="font-size:13px;">EDU<span>SYS</span></span>
+            <img src="~/css/imagens/logo_conecta 2.png" alt="Logo Conecta" style="height:32px; width:auto;" />
         </div>
         <div class="posts-topbar-sep"></div>
         <p class="posts-page-title">POSTS<span>.</span></p>
         <div style="margin-left:auto;">
-            <a asp-controller="Post" asp-action="Create" class="btn btn-primary" style="padding:8px 18px;font-size:10px;">
+            <a asp-controller="Post" asp-action="Create" class="btn btn-primary" style="padding:10px 22px;font-size:13px;">
                 <i class="fas fa-plus"></i> Novo Post
             </a>
         </div>

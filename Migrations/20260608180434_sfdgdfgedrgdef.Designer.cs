@@ -12,8 +12,8 @@ using backendconfigconecta.Data;
 namespace backendconfigconecta.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260601133135_sdf")]
-    partial class sdf
+    [Migration("20260608180434_sfdgdfgedrgdef")]
+    partial class sfdgdfgedrgdef
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,6 +165,9 @@ namespace backendconfigconecta.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Blocked")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

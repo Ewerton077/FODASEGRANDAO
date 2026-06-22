@@ -5005,11 +5005,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alunobcc11\\Desktop\\FODASEGRANDAO\\backendcodeteste.csproj",
+      "projectUniqueName": "C:\\Users\\alunobcc11\\Desktop\\perdiafenavida\\backendcodeteste.csproj",
       "projectName": "backendconfigconecta",
-      "projectPath": "C:\\Users\\alunobcc11\\Desktop\\FODASEGRANDAO\\backendcodeteste.csproj",
+      "projectPath": "C:\\Users\\alunobcc11\\Desktop\\perdiafenavida\\backendcodeteste.csproj",
       "packagesPath": "C:\\Users\\alunobcc11\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alunobcc11\\Desktop\\FODASEGRANDAO\\obj\\",
+      "outputPath": "C:\\Users\\alunobcc11\\Desktop\\perdiafenavida\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

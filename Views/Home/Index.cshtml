@@ -2,6 +2,8 @@
     ViewData["Title"] = "Home";
     Layout = null;
 }
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -12,6 +14,7 @@
     <style>
         /* ── VARIÁVEIS DE CORES (tema claro) ── */
         :root {
+            
             --brand-lime:        #1EB53A;
             --brand-lime-dark:   #008744;
             --brand-lime-light:  #31f301;
@@ -51,6 +54,155 @@
 
             --font-sans:         'Segoe UI', system-ui, sans-serif;
             --font-mono:         'SF Mono', 'Fira Code', monospace;
+        }
+
+@@keyframes fadeSlider {
+    0%   { opacity: 0; transform: scale(1.08); }
+    8%   { opacity: 1; transform: scale(1); }
+    25%  { opacity: 1; transform: scale(1); }
+    33%  { opacity: 0; transform: scale(1.03); }
+    100% { opacity: 0; transform: scale(1.03); }
+}
+        
+        /* ── HERO (80vh) ── */
+.hero {
+    position: relative;
+    height: 80vh;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    opacity: 0;
+
+    will-change: opacity, transform;
+}
+
+.hero-bg:nth-child(1) {
+    background-image: url('@Url.Content("~/css/imagens/trabalhoemequipe.jpg")');
+    animation: fadeSlider 12s infinite;
+}
+
+.hero-bg:nth-child(2) {
+    background-image: url('@Url.Content("~/css/imagens/aulapratica.jpg")');
+    animation: fadeSlider 12s infinite 4s;
+}
+
+.hero-bg:nth-child(3) {
+    background-image: url('@Url.Content("~/css/imagens/apresentacoes.jpg")');
+    animation: fadeSlider 12s infinite 8s;
+}
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.78) 100%);
+            z-index: 1;
+        }
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(161,188,33,0.15);
+            color: var(--brand-lime);
+            border: 1px solid rgba(161,188,33,0.4);
+            padding: 6px 18px;
+            border-radius: var(--radius-full);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.8s ease-out;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--brand-lime);
+            animation: fadeUp 0.8s ease-out 0.2s backwards;
+        }
+        .hero h1 span { color: #ffffff; }
+        .hero h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.8s ease-out 0.4s backwards;
+        }
+        .hero p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1rem;
+            max-width: 680px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeUp 0.8s ease-out 0.6s backwards;
+        }
+        .hero .destaque {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--brand-lime);
+            margin: 1rem 0;
+            animation: fadeUp 0.8s ease-out 0.8s backwards;
+        }
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            animation: fadeUp 0.8s ease-out 1s backwards;
+        }
+        .hero .btn-primary-hero {
+            background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
+            color: #2a3d00;
+            padding: 10px 24px;
+            border-radius: 5px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 18px rgba(161,188,33,0.35);
+            transition: all 0.22s;
+        }
+        .hero .btn-primary-hero:hover {
+            background: linear-gradient(135deg, var(--brand-lime-light) 0%, var(--brand-lime) 100%);
+            box-shadow: 0 6px 24px rgba(161,188,33,0.5);
+            transform: translateY(-2px);
+        }
+        .hero .btn-secondary-hero {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.55);
+            padding: 10px 24px;
+            border-radius: 5px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.22s;
+        }
+        .hero .btn-secondary-hero:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.85);
         }
 
         /* ── RESET / BASE ── */
@@ -158,120 +310,6 @@
             border: none;
         }
 
-        /* ── HERO (80vh) ── */
-        .hero {
-            min-height: 80vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 6rem 2rem 4rem;
-            position: relative;
-            background-size: cover;
-            background-position: center;
-            overflow: hidden;
-        }
-        .hero-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.78) 100%);
-            z-index: 1;
-        }
-        .hero-content {
-            max-width: 900px;
-            text-align: center;
-            position: relative;
-            z-index: 3;
-        }
-        .hero-badge {
-            display: inline-block;
-            background: rgba(161,188,33,0.15);
-            color: var(--brand-lime);
-            border: 1px solid rgba(161,188,33,0.4);
-            padding: 6px 18px;
-            border-radius: var(--radius-full);
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 0.18em;
-            margin-bottom: 1.5rem;
-            animation: fadeUp 0.8s ease-out;
-        }
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            color: var(--brand-lime);
-            animation: fadeUp 0.8s ease-out 0.2s backwards;
-        }
-        .hero h1 span { color: #ffffff; }
-        .hero h2 {
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 1.5rem;
-            animation: fadeUp 0.8s ease-out 0.4s backwards;
-        }
-        .hero p {
-            font-size: 0.95rem;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 1rem;
-            max-width: 680px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeUp 0.8s ease-out 0.6s backwards;
-        }
-        .hero .destaque {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--brand-lime);
-            margin: 1rem 0;
-            animation: fadeUp 0.8s ease-out 0.8s backwards;
-        }
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1.5rem;
-            animation: fadeUp 0.8s ease-out 1s backwards;
-        }
-        .hero .btn-primary-hero {
-            background: linear-gradient(135deg, var(--brand-lime) 0%, var(--brand-lime-dark) 100%);
-            color: #2a3d00;
-            padding: 10px 24px;
-            border-radius: 5px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.18em;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 18px rgba(161,188,33,0.35);
-            transition: all 0.22s;
-        }
-        .hero .btn-primary-hero:hover {
-            background: linear-gradient(135deg, var(--brand-lime-light) 0%, var(--brand-lime) 100%);
-            box-shadow: 0 6px 24px rgba(161,188,33,0.5);
-            transform: translateY(-2px);
-        }
-        .hero .btn-secondary-hero {
-            background: transparent;
-            color: #ffffff;
-            border: 1px solid rgba(255,255,255,0.55);
-            padding: 10px 24px;
-            border-radius: 5px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 0.14em;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            transition: all 0.22s;
-        }
-        .hero .btn-secondary-hero:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.85);
-        }
 
         /* ── WAVES ARREDONDADAS ── */
         .hero-waves {
@@ -280,7 +318,7 @@
             left: 0;
             width: 100%;
             height: 120px;
-            z-index: 10;
+            z-index: 2;
             pointer-events: none;
         }
         .hero-wave {
@@ -324,7 +362,7 @@
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(161,188,33,0.4), transparent);
             pointer-events: none;
-            z-index: 3;
+            z-index: 2;
         }
         .decorative-line.top    { top: 120px; left: 10%; width: 80%; }
         .decorative-line.bottom { bottom: 100px; left: 10%; width: 60%; }
@@ -910,7 +948,11 @@
 </header>
 
 <!-- ── HERO (80vh) ──────────────────────────────────────────── -->
-<section id="home" class="hero" style="background-image: url('@Url.Content("~/css/imagens/porque.png")');">
+
+<section id="home" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-bg"></div>
+    <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-waves">
         <div class="hero-wave wave-1"></div>
@@ -1155,10 +1197,6 @@
         <p>© 2025 Barracred Conecta · Cooperativa Barracred · Todos os direitos reservados</p>
     </div>
 </footer>
-
-<a href="https://wa.me/551400000000" class="whatsapp-float" target="_blank">
-    <i class="fab fa-whatsapp"></i>
-</a>
 
 <script>
     window.addEventListener('scroll', () => {
